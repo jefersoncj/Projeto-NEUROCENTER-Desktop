@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="markconsultas" default="default" basedir=".">
+    <description>Builds, tests, and runs the project markconsultas.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="markconsultas-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+    <!-- configurando o target -post-compile, que é executado depois
+         da compilação dos arquivos .java do projeto-->
+    <target name="-post-compile">
+ 
+        <!-- Compilação das definições dos relatórios -->
+        <!-- a tarefa "echo" do Ant mostra uma mensagem na saída -->
+        <echo>Iniciando compilação das definições de relatórios...</echo>
+ 
+        <!-- Define o classpath usado para a compilação dos relatórios -->
+ 
+        <!-- A tarefa "path" do Ant define um caminho com id de "jrc.classpath"
+             que indica um conjunto de arquivos (fileset) que correspondem
+             a todos os .jars (que serão usados na compilação) localizados no
+             diretório ${build.dir}/../lib/JasperReports-3.7.5.
+ 
+             Quando o build for executado, a propriedade ${build.dir} será
+             substituida por C:\<caminho>\TutorialRelatorios\build,
+             sendo assim estamos acessando o diretório
+             C:\<caminho>\TutorialRelatorios\lib\JasperReports-3.7.5, que no nosso
+             projeto armazena todos os .jars utilizados pelo JasperReports.
+ 
+             Para entender o que está acontecendo, sempre verifique a estrutura
+             do projeto (na aba File). -->
+        <path id="jrc.classpath">
+            <fileset dir="${build.dir}/../lib/JasperReports-5.1.0"
+                     includes="*.jar"/>
+        </path>
+ 
+        <!-- Definimos então uma tarefa customizada do Ant, chamada "jrc",
+             que é implementada na classe net.sf.jasperreports.ant.JRAntCompileTask,
+             que por sua vez é usada para compilar arquivos .jrxml
+ 
+             Note que é necessário configurar o classpath para o Ant
+             saber onde a classe está definida, além das possíveis dependências
+             que ela utiliza. O classpath vem da tarefa "path" que configuramos
+             anteriormente, ou seja, todos os .jars do diretório
+             C:\<caminho>\TutorialRelatorios\lib\JasperReports-3.7.5 -->
+        <taskdef name="jrc"
+                 classname="net.sf.jasperreports.ant.JRAntCompileTask">
+            <classpath refid="jrc.classpath"/>
+        </taskdef>
+ 
+        <!-- Quando testamos nossos relatórios, eles são compilados, gerando
+             arquivos .jasper. O problema é as vezes nós alteramos o arquivo fonte
+             e esquecemos de compilar. Sendo assim, caso existam definições de
+             relatórios compiladas (que podem corresponder à versões antigas dos .jrxml's),
+             a tarefa "delete" do Ant (definida abaixo) apaga todos os arquivos .jasper do diretório
+             ${build.classes.dir} (C:\<caminho>\TutorialRelatorios\build\classes), ou seja,
+             onde os arquivos .jasper são copiados durante o processo de build normal.
+             -->
+        <delete>
+            <fileset dir="${build.classes.dir}" includes="*.jasper"/>
+        </delete>
+ 
+        <!-- Por fim, compilamos as definições de relatórios (.jrxmls contidos no diretório
+             "relatorios") do nosso projeto, sendo que os arquivos compilados (.jasper)
+             são gerados no diretório ${build.classes.dir}, ou seja, em
+             C:\<caminho>\TutorialRelatorios\build\classes. Note que usamos a tarefa "jrc" que definimos
+             acima e precisamos passar novamente o classpath definido na tarefa "path". -->
+        <jrc srcdir="relatorios"
+             destdir="${build.classes.dir}">
+            <classpath
+                refid="jrc.classpath"/>
+            <include
+                name="*.jrxml"/>
+        </jrc>
+
+	# Set root logger level to DEBUG and its only appender to Appender1. 
+ log4j.rootLogger=WARN,Appender1,Appender2
+ 
+ # Appender1 is set to be a ConsoleAppender. 
+ log4j.appender.Appender1=org.apache.log4j.ConsoleAppender 
+ log4j.appender.Appender2=org.apache.log4j.RollingFileAppender 
+ log4j.appender.Appender2.File=sample.log 
+ 
+ 
+ # Appender2 uses PatternLayout. 
+ log4j.appender.Appender1.layout=org.apache.log4j.PatternLayout 
+ log4j.appender.Appender1.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n 
+ 
+ log4j.appender.Appender2.layout=org.apache.log4j.PatternLayout 
+ log4j.appender.Appender2.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+ 
+        <!-- Legal, terminou o processo, definições compiladas -->
+        <echo>Compilação das definições de relatórios finalizada!</echo>
+ 
+    </target>
+</project>

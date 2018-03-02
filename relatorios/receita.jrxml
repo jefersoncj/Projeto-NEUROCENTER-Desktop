@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receita" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="4413b62f-eac4-4256-97c0-c58875fd5d16">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="46"/>
+	<property name="ireport.y" value="558"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Arial" fontSize="12"/>
+	<style name="zebra">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#C0C0C0"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="dataset1" uuid="3c71e58b-5a44-4727-828e-74a5622b0510"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\markconsultasct\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_usu" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_receita" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="emp" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  p.id, p.nome, p.id_convenio, receita.*, usuarios.*, especialidades.*, empr.fantasia, empr.logradouro,empr.numero, empr.municipio, empr.uf, empr.bairro, empr.fone_fixo,empr.figura
+FROM receita
+LEFT JOIN pacientes AS p ON p.id = receita.id_paciente
+LEFT JOIN empresas AS empr ON  empr.id = $P{emp}
+LEFT JOIN usuarios ON usuarios.id = $P{id_usu}
+LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade
+
+WHERE receita.id = $P{id_receita}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="id_convenio" class="java.lang.Integer"/>
+	<field name="id_paciente" class="java.lang.Integer"/>
+	<field name="data_cadastro" class="java.sql.Date"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="senha" class="java.lang.String"/>
+	<field name="he_adm" class="java.lang.Boolean"/>
+	<field name="esconde_barra" class="java.lang.Boolean"/>
+	<field name="crm" class="java.lang.String"/>
+	<field name="id_especialidade" class="java.lang.Integer"/>
+	<field name="he_medico" class="java.lang.Boolean"/>
+	<field name="he_atendente" class="java.lang.Boolean"/>
+	<field name="nome_medico" class="java.lang.String"/>
+	<field name="cod_tema" class="java.lang.Integer"/>
+	<field name="ds_especialidade" class="java.lang.String"/>
+	<field name="fantasia" class="java.lang.String"/>
+	<field name="logradouro" class="java.lang.String"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="municipio" class="java.lang.String"/>
+	<field name="uf" class="java.lang.String"/>
+	<field name="bairro" class="java.lang.String"/>
+	<field name="fone_fixo" class="java.lang.String"/>
+	<field name="figura" class="java.lang.Object"/>
+	<sortField name="PAGE_NUMBER" type="Variable"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<rectangle>
+				<reportElement x="42" y="0" width="9" height="64" forecolor="#99CCFF" backcolor="#99CCFF" uuid="01ac75c5-9c80-467a-bd7b-df71dd471b86"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Opaque" x="504" y="0" width="9" height="64" forecolor="#99CCFF" backcolor="#99CCFF" uuid="01ac75c5-9c80-467a-bd7b-df71dd471b86"/>
+			</rectangle>
+			<textField>
+				<reportElement x="51" y="19" width="453" height="20" forecolor="#99CCFF" uuid="ccf3336d-82bf-4a21-8795-15d25ceab2cb"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DR. "+$F{nome_medico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="39" width="453" height="20" forecolor="#99CCFF" uuid="2203d10c-c5ee-4b3b-8f2b-89d787cad4a9"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ds_especialidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="59" width="453" height="20" forecolor="#99CCFF" uuid="fb948fb0-4596-4ae2-9853-8224d5b797f0"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CRM - "+$F{crm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="558">
+			<staticText>
+				<reportElement x="163" y="53" width="66" height="20" uuid="5ce1f798-615d-4e3a-b026-83118541b082"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PACIENTE:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="229" y="53" width="267" height="20" uuid="46ba6236-bafb-468f-8345-5bdfd4a5c3c5"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="51" width="66" height="0" uuid="791b48b4-50c2-4bb2-afd5-b8559dd70950"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA NASC.:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="163" y="91" width="392" height="436" uuid="43d15d2c-06a6-4b86-9025-cbae3b6c1abe"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font isUnderline="false"/>
+					<paragraph leftIndent="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="17" width="136" height="539" forecolor="#0000CC" uuid="14a3a74d-3247-40ab-9804-633d87d759e7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="10" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="false"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[  GRADUADO PELA UNIVERSIDADE DO PERNANBUCO – UPE
+
+   RESIDENCIA MEDICA EM NEUROLOGIA E NEUROCIRURGIA
+
+    MEMBRO DA SOCIEDADE BRASILEIRA DE NEUROCIRURGIA
+
+REALIZA TRATAMENTO DE:
+
+1.     EPILEPSIA;
+
+2.     NEUROCIRURGIA VASCULAR ENCEFALICA;
+
+3.     HERNIA DE DISCO;
+
+4.     TRAUMATISMO CRÂNIO ENCEFALICO E  DE COLUNA;
+
+5.     DOENÇA DE PARKINSON;
+
+6.     DOENÇA DE ALZEHEIMER;
+
+7.     TUMORES DO SISTEMA NERVOSO CENTRAL;
+
+8.     CIRURGIA CRÂNIO ENCEFALICA;
+
+9.     REALIZA EXAME DE ELETROENCEFA-LOGRAFIA (E.E.G.).
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="4" width="1" height="12" forecolor="#99CCFF" uuid="137a7fbf-879b-4bee-8222-2fba3e692161"/>
+			</line>
+			<line>
+				<reportElement x="0" y="4" width="149" height="1" forecolor="#99CCFF" uuid="9ffab113-7a89-4aa5-971a-61a4d4fe1fe1"/>
+			</line>
+			<line>
+				<reportElement x="148" y="4" width="1" height="523" forecolor="#99CCFF" uuid="8133324f-0502-4ca0-aec7-9cf59b3ba6e3"/>
+			</line>
+			<line>
+				<reportElement x="137" y="527" width="12" height="1" forecolor="#99CCFF" uuid="5556644f-ab0b-40c6-88da-7968ba50500b"/>
+			</line>
+			<line>
+				<reportElement x="149" y="39" width="406" height="1" forecolor="#99CCFF" uuid="2c8bbe9b-f5e8-4e92-86ac-e29340733ecb"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="78">
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="57" width="40" height="20" uuid="a5c43b5a-524b-4f64-b3f6-04182a98ee43"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="1" y="57" width="192" height="20" uuid="ceffad89-e9b5-4855-829d-a0d837f971a7"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="57" width="76" height="20" uuid="4cec738d-7a48-40f1-a6e6-7051ae7d466d"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="554" height="12" forecolor="#666666" uuid="f032ea10-a4a0-45c5-b300-fbe41a5800e4"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fantasia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="36" width="554" height="13" forecolor="#666666" uuid="d7973188-35c3-4f98-a92c-43dc176be0f6"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FONE:"+" "+$F{fone_fixo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="13" width="553" height="11" forecolor="#666666" uuid="b54380df-17cd-4552-9d72-1c18349b4ed7"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{logradouro}+", "+$F{numero}+", "+$F{bairro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="24" width="553" height="12" forecolor="#666666" uuid="6251ba11-0725-424f-9c54-1416381710eb"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{municipio}+" - "+$F{uf}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
