@@ -6,8 +6,11 @@ package br.com.markConsult.gui;
 
 import br.com.markConsult.classesMetodos.FixedLengthDocument;
 import br.com.markConsult.classesMetodos.IntegerDocument;
+import br.com.markConsult.dao.CadEspecialiDAO;
 import br.com.markConsult.dao.CadUsuarioDAO;
+import br.com.markConsult.entidades.Especialidade;
 import br.com.markConsult.entidades.Usuario;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
@@ -16,22 +19,20 @@ import javax.swing.JOptionPane;
  * @author jeferson
  */
 public class CadUsuario extends javax.swing.JInternalFrame {
-
-    int inserir_alterar = 0;
-
+int inserir_alterar = 0;
     /**
      * Creates new form CadUsuario
      */
     public CadUsuario() {
         initComponents();
-
+        tela_principal.remove(jPanel1);
         estadoBotoes("inicial");
         tf_codigo.setDocument(new IntegerDocument(10));
-        tf_login.setDocument(new FixedLengthDocument(20));
-
+        tf_login.setDocument(new  FixedLengthDocument(20));
+        tf_nomeM.setDocument(new  FixedLengthDocument(120));
+       
         atualizaTela();
         bt_buscar.requestFocus();
-
     }
 
     /**
@@ -55,6 +56,7 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         bt_avançar = new javax.swing.JButton();
         bt_voltar = new javax.swing.JButton();
         bt_primeiro = new javax.swing.JButton();
+        tela_principal = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         tf_codigo = new javax.swing.JTextField();
@@ -63,6 +65,18 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         ch_heAdm = new java.awt.Checkbox();
         cb_resetSenha = new java.awt.Checkbox();
         ch_heatendete = new java.awt.Checkbox();
+        ch_hemedico = new java.awt.Checkbox();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tf_crm = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tf_dsEspeciali = new javax.swing.JTextField();
+        bt_buscEspe = new javax.swing.JButton();
+        tf_codEsp = new javax.swing.JTextField();
+        lbEsp = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        tf_nomeM = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -243,26 +257,37 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
         ch_heatendete.setLabel("Atendente");
 
+        ch_hemedico.setLabel("Médico");
+        ch_hemedico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ch_hemedicoMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tf_codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                    .addComponent(tf_login))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ch_heAdm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ch_heatendete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cb_resetSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(tf_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ch_heAdm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ch_heatendete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ch_hemedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_login, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cb_resetSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(397, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,30 +300,131 @@ public class CadUsuario extends javax.swing.JInternalFrame {
                             .addComponent(tf_codigo))
                         .addComponent(ch_heAdm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(ch_heatendete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_resetSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ch_hemedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(tf_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cb_resetSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
+
+        tela_principal.addTab("Cadastro", jPanel2);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Médicos", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+
+        jLabel1.setText("CRM:");
+
+        jLabel2.setText("Especialidade:");
+
+        tf_dsEspeciali.setEditable(false);
+
+        bt_buscEspe.setText("...");
+        bt_buscEspe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_buscEspeActionPerformed(evt);
+            }
+        });
+
+        tf_codEsp.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tf_codEspFocusLost(evt);
+            }
+        });
+        tf_codEsp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_codEspActionPerformed(evt);
+            }
+        });
+        tf_codEsp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_codEspKeyPressed(evt);
+            }
+        });
+
+        lbEsp.setText("*");
+
+        jLabel3.setText("Nome:");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbEsp))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tf_crm, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(bt_buscEspe)
+                        .addGap(0, 0, 0)
+                        .addComponent(tf_codEsp, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(tf_dsEspeciali, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tf_nomeM))
+                .addContainerGap(266, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_nomeM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(tf_crm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tf_dsEspeciali, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bt_buscEspe)
+                    .addComponent(tf_codEsp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbEsp))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tela_principal.addTab("Dados do Médico", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tela_principal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(tela_principal, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -320,34 +446,45 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
     private void bt_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_salvarActionPerformed
         String login = tf_login.getText();
+        String nomeM = tf_nomeM.getText();
+        String crm = tf_crm.getText();
+        String id_esp = tf_codEsp.getText();
         Integer idEsp = null;
+        if (ch_hemedico.getState()== false) {
+            crm = "";
+        }else{
+            idEsp = Integer.parseInt(id_esp);
+        }    
+        Especialidade espe = new Especialidade(idEsp, null);
         if (inserir_alterar == 0) {
             CadUsuarioDAO dao = new CadUsuarioDAO();
-
-            Usuario usuario = new Usuario(null, login, login, ch_heAdm.getState(),
-                    ch_heatendete.getState(), false, false, 8);
-            Usuario u = dao.procuraPorUsu(login);
+            
+            Usuario usuario = new Usuario(null, login, login ,crm,nomeM,espe,ch_heAdm.getState(),ch_hemedico.getState(),
+                    ch_heatendete.getState(),false,false,8);
+            Usuario u =   dao.procuraPorUsu(login);
             if (u != null) {
                 JOptionPane.showMessageDialog(null, "Já existe um usuário com esse nome");
-            } else {
+            }else{
                 int id = dao.inserir(usuario);
-                tf_codigo.setText("" + id);
+                tf_codigo.setText(""+id);
                 estadoBotoes("salvar");
             }
 
-        } else if (inserir_alterar == 1) {
+        }else
+
+        if (inserir_alterar == 1) {
             CadUsuarioDAO dao = new CadUsuarioDAO();
             Integer id = Integer.parseInt(tf_codigo.getText());
             boolean resetSennha = cb_resetSenha.getState();
-            if (resetSennha) {
-                Usuario usuario = new Usuario(id, null, login, ch_heAdm.getState(),
-                        ch_heatendete.getState(), true, false, null);
+            if (resetSennha ) {
+                Usuario usuario = new Usuario(id, null, login ,crm,nomeM,espe,ch_heAdm.getState(),ch_hemedico.getState(),
+                    ch_heatendete.getState(),true,false,null);
                 dao.alterar(usuario);
                 estadoBotoes("salvar");
-            } else {
+            }else{
 
-                Usuario usuario = new Usuario(id, null, null, ch_heAdm.getState(),
-                        ch_heatendete.getState(), false, false, null);
+                Usuario usuario = new Usuario(id, null, null ,crm,nomeM,espe,ch_heAdm.getState(),ch_hemedico.getState(),
+                    ch_heatendete.getState(),false,false,null);
                 dao.alterar(usuario);
                 estadoBotoes("salvar");
 
@@ -425,29 +562,63 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
     private void tf_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_codigoFocusLost
         String id = tf_codigo.getText();
-        if (tf_codigo.isEditable()) {
-
-            if (id.equals("")) {
-                atualizaTela();
-            } else {
-                if (tf_codigo.isEditable()) {
-                    buscaPorId(id);
-                }
-
+        if (tf_codigo.isEditable()) {      
+        
+        if (id.equals("")) {
+            atualizaTela();
+        }else{
+            if (tf_codigo.isEditable()) {
+                buscaPorId(id);
             }
-        }
+            
+        }}
     }//GEN-LAST:event_tf_codigoFocusLost
 
     private void tf_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_codigoKeyPressed
-        if (tf_codigo.isEditable()) {
+          if (tf_codigo.isEditable()) {
+        if (evt.getKeyCode() == KeyEvent.VK_F2) {
+            telBuscUsuario();
+        }
+          }
+    }//GEN-LAST:event_tf_codigoKeyPressed
+
+    private void bt_buscEspeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscEspeActionPerformed
+        telBuscEspe();
+    }//GEN-LAST:event_bt_buscEspeActionPerformed
+
+    private void tf_codEspActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_codEspActionPerformed
+
+        bt_salvar.requestFocus();
+    }//GEN-LAST:event_tf_codEspActionPerformed
+
+    private void tf_codEspFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_codEspFocusLost
+        buscaEspPorId();
+    }//GEN-LAST:event_tf_codEspFocusLost
+
+    private void tf_codEspKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_codEspKeyPressed
+        if (tf_codEsp.isEditable()) {
             if (evt.getKeyCode() == KeyEvent.VK_F2) {
-                telBuscUsuario();
+                telBuscEspe();
             }
         }
-    }//GEN-LAST:event_tf_codigoKeyPressed
+
+    }//GEN-LAST:event_tf_codEspKeyPressed
+
+    private void ch_hemedicoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ch_hemedicoMousePressed
+       boolean ch_medic = ch_hemedico.getState();
+
+        if (ch_medic== false) {
+
+            tela_principal.add("Dados do Médico", jPanel1);
+
+        } else if (ch_medic ) {
+            tela_principal.remove(jPanel1);
+        }
+    }//GEN-LAST:event_ch_hemedicoMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_avançar;
+    private javax.swing.JButton bt_buscEspe;
     private javax.swing.JButton bt_buscar;
     private javax.swing.JButton bt_cancelar;
     private javax.swing.JButton bt_editar;
@@ -461,16 +632,29 @@ public class CadUsuario extends javax.swing.JInternalFrame {
     private java.awt.Checkbox cb_resetSenha;
     private java.awt.Checkbox ch_heAdm;
     private java.awt.Checkbox ch_heatendete;
+    private java.awt.Checkbox ch_hemedico;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel lbEsp;
+    private javax.swing.JTabbedPane tela_principal;
+    private javax.swing.JTextField tf_codEsp;
     private javax.swing.JTextField tf_codigo;
+    private javax.swing.JTextField tf_crm;
+    private javax.swing.JTextField tf_dsEspeciali;
     private javax.swing.JTextField tf_login;
+    private javax.swing.JTextField tf_nomeM;
     // End of variables declaration//GEN-END:variables
 private void estadoBotoes(String botao) {
-        if ("inicial".equals(botao)) {
-
+if ("inicial".equals(botao)) {
+ 
+             
             bt_novo.setEnabled(true);
             bt_cancelar.setEnabled(false);
             bt_editar.setEnabled(true);
@@ -481,14 +665,22 @@ private void estadoBotoes(String botao) {
             bt_voltar.setEnabled(true);
             bt_avançar.setEnabled(true);
             bt_ultimo.setEnabled(true);
+            bt_buscEspe.setEnabled(false);
 
             tf_codigo.setEditable(true);
             tf_login.setEditable(false);
-
+            
+            tf_crm.setEditable(false);
+            tf_nomeM.setEditable(false);
+            tf_codEsp.setEditable(false);
+            
+  
             ch_heAdm.setEnabled(false);
-
+            ch_hemedico.setEnabled(false);
             ch_heatendete.setEnabled(false);
             cb_resetSenha.setEnabled(false);
+            
+           
 
         }
 
@@ -504,18 +696,28 @@ private void estadoBotoes(String botao) {
             bt_voltar.setEnabled(false);
             bt_avançar.setEnabled(false);
             bt_ultimo.setEnabled(false);
+            bt_buscEspe.setEnabled(true);
 
             tf_codigo.setEditable(false);
             tf_login.setEditable(true);
+            
+            tf_crm.setEditable(true);
+            tf_nomeM.setEditable(true);
+            tf_codEsp.setEditable(true);
+           
 
             ch_heAdm.setEnabled(true);
+            ch_hemedico.setEnabled(true);
             ch_heatendete.setEnabled(true);
             cb_resetSenha.setEnabled(false);
+            
+         
 
         }
 
+
         if ("cancelar".equals(botao)) {
-            atualizaTela();
+           atualizaTela();
             estadoBotoes("inicial");
         }
         if ("salvar".equals(botao)) {
@@ -528,59 +730,130 @@ private void estadoBotoes(String botao) {
 
         }
 
-    }
+ }
 
-    public void mostrar_dados(Usuario usuario) {
-        if (usuario != null) {
-            tf_codigo.setText("" + usuario.getId());
-            tf_login.setText(usuario.getNome());
-            ch_heAdm.setState(usuario.isHeAdm());
-            ch_heatendete.setState(usuario.isHeAtendente());
 
+ public void mostrar_dados(Usuario usuario) {
+if(usuario!=null){
+        tf_codigo.setText("" + usuario.getId());    
+        tf_login.setText(usuario.getNome());  
+        ch_heAdm.setState(usuario.isHeAdm());
+        ch_heatendete.setState(usuario.isHeAtendente());
+        tf_crm.setText(usuario.getCrm());
+        tf_nomeM.setText(usuario.getNomeMedico());
+        if (usuario.getEspecialidade().getId() != 0) {
+                tf_codEsp.setText(usuario.getEspecialidade().getId().toString());
+                tf_dsEspeciali.setText(usuario.getEspecialidade().getEspecialidade());
+            }else{
+                tf_codEsp.setText("");
+                tf_dsEspeciali.setText("");
+            }
+        if (usuario.isHeMedico() == true) {
+            tela_principal.add("Dados do Medico", jPanel1);
+            ch_hemedico.setState(true);
+
+        } else {
+            tela_principal.remove(jPanel1);
+            ch_hemedico.setState(false);
+        }
 //        tf_senha1.setText("" + usuario.getSenha());    
 //        tf_senha2.setText("" + usuario.getSenha());    
+       
+}
+    }
+public final void atualizaTela() {
+       CadUsuarioDAO dao = new CadUsuarioDAO();
+       Usuario u = dao.mostrarUltimo();
+
+           mostrar_dados(u);
+        
+}
+
+public void buscaPorId(String id) {
+    if (!tf_codigo.getText().equals("")) {
+        
+    
+      CadUsuarioDAO dao = new CadUsuarioDAO();
+        Usuario usuario = dao.procuraPorID(Integer.parseInt(id));
+        if(usuario==null){
+            JOptionPane.showMessageDialog(null, "Cadastro "+tf_codigo.getText()+" não existe!");
+            tf_codigo.requestFocus();
         }
+        mostrar_dados(usuario);
     }
+}
 
-    public final void atualizaTela() {
-        CadUsuarioDAO dao = new CadUsuarioDAO();
-        Usuario u = dao.mostrarUltimo();
-
-        mostrar_dados(u);
-
-    }
-
-    public void buscaPorId(String id) {
-        if (!tf_codigo.getText().equals("")) {
-
-            CadUsuarioDAO dao = new CadUsuarioDAO();
-            Usuario usuario = dao.procuraPorID(Integer.parseInt(id));
-            if (usuario == null) {
-                JOptionPane.showMessageDialog(null, "Cadastro " + tf_codigo.getText() + " não existe!");
-                tf_codigo.requestFocus();
-            }
-            mostrar_dados(usuario);
-        }
-    }
-
-    public void limpaCampos() {
-
+    public void limpaCampos(){
+        tela_principal.remove(jPanel1);
         tf_codigo.setText("");
         tf_login.setText("");
+        tf_nomeM.setText("");
+        tf_crm.setText("");
+        tf_codEsp.setText("");
+        tf_dsEspeciali.setText("");
         ch_heAdm.setState(false);
         ch_heatendete.setState(false);
+        ch_hemedico.setState(false);
         cb_resetSenha.setState(false);
-
+       
+ 
     }
-
-    public void telBuscUsuario() {
-        BuscUsuario usu = new BuscUsuario(null, true);
+    
+    
+    public void telBuscUsuario(){
+        BuscaUsuario usu = new BuscaUsuario(null, true);
         usu.setVisible(true);
         if (usu.okselecionado()) {
-
+          
             mostrar_dados(usu.retornEspSele());
         }
         usu.dispose();
     }
-
+    
+    
+    public void telBuscEspe(){
+           BuscaEspecialidades b = new BuscaEspecialidades(null, true);
+      b.setVisible(true);
+        if (b.okselecionado()) {
+            Especialidade m = b.retornEspSele();
+        if (m != null) {
+            tf_codEsp.setText(m.getId().toString());
+            tf_dsEspeciali.setText(m.getEspecialidade());
+            lbEsp.setForeground(Color.black); 
+            
+        }
+        }
+}
+    
+    public void buscaEspPorId() {
+    String id =  tf_codEsp.getText();
+    if (!id.equals("")) {
+        
+    
+      CadEspecialiDAO dao = new CadEspecialiDAO();
+        Especialidade p = dao.procuraPorID(Integer.parseInt(id));
+        if(p==null){
+            JOptionPane.showMessageDialog(null, "Cadastro "+tf_codigo.getText()+" não existe!");
+            tf_codEsp.requestFocus();
+        }else{
+           tf_codEsp.setText(p.getId().toString());
+           tf_dsEspeciali.setText(p.getEspecialidade());
+           lbEsp.setForeground(Color.black); 
+        }
+        
+    }else{
+        tf_dsEspeciali.setText("");
+    }
+}
+    
+     public void mostrar_dadosMedico(Usuario med) {
+        if(med!=null){
+        tf_crm.setText(med.getCrm());
+        tf_codEsp.setText(med.getEspecialidade().getId().toString());
+        if (med.getEspecialidade().getEspecialidade() != null) {
+         tf_dsEspeciali.setText(""+med.getEspecialidade().getEspecialidade());
+        }
+}
+    }
+ 
 }

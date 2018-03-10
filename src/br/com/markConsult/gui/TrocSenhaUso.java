@@ -229,7 +229,7 @@ public void okSeleci(){
             senha3 = senha3 + a;
         }
         if (verificaCampos()) {
-        Usuario usuario = new Usuario(null,usu , senha2 ,false,false,false,false,null);
+        Usuario usuario = new Usuario(null,usu , senha2 ,null,null, null,false,false,false,false,false,null);
         dao.trocarSenha(usuario);
         JOptionPane.showMessageDialog(null, "Senha Alterada com sucesso!");
         btCancelar.requestFocus();

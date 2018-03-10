@@ -6,7 +6,7 @@ package br.com.markConsult.dao;
 
 import br.com.markConsult.entidades.Cep;
 import br.com.markConsult.entidades.Empresa;
-import java.io.IOException;
+import br.com.markConsult.entidades.EmpresaProcedimento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,15 +45,13 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         try {
-            
-             
             // pegar a connection
             connection = getConnection();
             beginTransaction(connection);
             // GERAR O ID UNICO
 
             // criar o sql
-            String sql = "INSERT INTO empresas (fantasia, razao_social, email, cep, municipio, uf, logradouro, numero, bairro, cnpj,fone_fixo, celular1, celular2)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO empresa (fantasia, razao_social, email, cep, municipio, uf, logradouro, numero, bairro, cnpj, inscricao_estadual, fone_fixo, celular2, contato)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // criar o statement
             pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -70,10 +68,10 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             pstm.setString(++index, empresa.getNumero());
             pstm.setString(++index, empresa.getCep().getBairro());
             pstm.setString(++index, empresa.getCnpj());
+            pstm.setString(++index, empresa.getInscricaoEstadual());
             pstm.setString(++index, empresa.getFoneFixo());
-            pstm.setString(++index, empresa.getCelular1());
             pstm.setString(++index, empresa.getCelular2());
-           
+            pstm.setString(++index, empresa.getContato());
 
             // executar
             pstm.executeUpdate();
@@ -84,7 +82,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             }
             commitTransaction(connection);
             idInserido = id;
-
+           inserirProcedimentosEmpresa(empresa.getEmpresaProcedimento(), id);
         } catch (Exception e) {
 
             try {
@@ -97,6 +95,131 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
         }
         return idInserido;
     }
+    
+     public Integer inserirProcedimentosEmpresa( List<EmpresaProcedimento> empresaProcedimentos, int idEmpresa) {
+                Connection connection = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		try {
+			// pegar a connection
+			connection = getConnection();
+			beginTransaction(connection);
+			// GERAR O ID UNICO
+                    for (EmpresaProcedimento empresaProcedimento : empresaProcedimentos) {
+                        if(empresaProcedimento.getId() == null){
+                            String sql = "INSERT INTO procedimento_empresa (id_empresa, id_procedimento, valor)VALUES (?, ?, ?)";
+                            // criar o statement
+                            pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                            // setar os params
+                            int index = 0;
+                            pstm.setInt(++index, idEmpresa);
+                            pstm.setInt(++index, empresaProcedimento.getProcedimento().getId());
+                            pstm.setDouble(++index, empresaProcedimento.getValor());
+                            // executar
+                            pstm.executeUpdate();
+                         }else{
+                            alterarValor(empresaProcedimento);
+                        }
+                    }
+
+			commitTransaction(connection);
+			
+		} catch (Exception e) {
+			
+			try {
+				rollbackTransaction(connection);
+			} catch (SQLException e1) {
+				throw new IllegalStateException();
+			}
+		} finally {
+			cleanup(rs, pstm, connection);
+		}
+		return idInserido; 
+    }
+     public boolean alterarValor(EmpresaProcedimento empresaProcedimento){
+                Connection connection = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		try {
+                    
+                    // pegar a connection
+			connection = getConnection();
+			beginTransaction(connection);
+			// criar o sql
+			String sql = "UPDATE procedimento_empresa SET valor = ? WHERE id = ?";
+
+			// criar o statement
+			pstm = connection.prepareStatement(sql);
+                        
+			// setar os params
+			int index = 0;
+			pstm.setDouble(++index, empresaProcedimento.getValor());
+                        pstm.setInt(++index, empresaProcedimento.getId());
+
+			// executar
+			pstm.execute();
+
+			commitTransaction(connection);
+			idAlterado = true;
+			
+		} catch (Exception e) {
+			idAlterado = false;
+			try {
+				rollbackTransaction(connection);
+			} catch (SQLException e1) {
+				throw new IllegalStateException();
+			}
+		} finally {
+			cleanup(rs, pstm, connection);
+		}
+		return idAlterado;
+    
+    
+    }
+//    public Integer inseEmpresaProcedimento(EmpresaProcedimento empresaProcedimento) {
+//        Connection connection = null;
+//        PreparedStatement pstm = null;
+//        ResultSet rs = null;
+//        try {
+//            // pegar a connection
+//            connection = getConnection();
+//            beginTransaction(connection);
+//            // GERAR O ID UNICO
+//
+//            // criar o sql
+//            String sql = "INSERT INTO procedimento_empresa (id_empresa, id_procedimento, valor)VALUES (?, ?, ?)";
+//
+//            // criar o statement
+//            pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+//
+//            // setar os params
+//            int index = 0;
+//            pstm.setInt(++index, empresaProcedimento.getEmpresa().getId());
+//            pstm.setInt(++index, empresaProcedimento.getProcedimento().getId());
+//            pstm.setDouble(++index, empresaProcedimento.getValor());
+//
+//            // executar
+//            pstm.executeUpdate();
+//            rs = pstm.getGeneratedKeys();
+//            int id = 0;
+//            if (rs.next()) {
+//                id = rs.getInt(1);
+//            }
+//            commitTransaction(connection);
+//            idInserido = id;
+//
+//        } catch (Exception e) {
+//
+//            try {
+//                rollbackTransaction(connection);
+//            } catch (SQLException e1) {
+//                throw new IllegalStateException();
+//            }
+//        } finally {
+//            cleanup(rs, pstm, connection);
+//        }
+//        return idInserido;
+//    }
 
     public boolean altEmpresa(Empresa empresa) {
         
@@ -104,16 +227,15 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
         PreparedStatement pstm = null;
         ResultSet rs = null;
         try {
-         
             // pegar a connection
             connection = getConnection();
             beginTransaction(connection);
             // criar o sql
-            String sql = "UPDATE empresas SET  fantasia = ?, razao_social = ?, "
+            String sql = "UPDATE empresa SET  fantasia = ?, razao_social = ?, "
                     + "email = ?, cep = ?, municipio = ?, uf = ?, logradouro = ?, numero = ?, bairro = ?, "
-                    + "cnpj = ?, fone_fixo = ?, celular1 = ?, celular2 = ? WHERE id = ?";
+                    + "cnpj = ?,inscricao_estadual= ?, fone_fixo = ?, celular2 = ?, contato = ? WHERE id = ?";
 
-            // criar o statement
+            // criar o statement 
             pstm = connection.prepareStatement(sql);
 
             // setar os params
@@ -128,16 +250,17 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             pstm.setString(++index, empresa.getNumero());
             pstm.setString(++index, empresa.getCep().getBairro());
             pstm.setString(++index, empresa.getCnpj());
+            pstm.setString(++index, empresa.getInscricaoEstadual());
             pstm.setString(++index, empresa.getFoneFixo());
-            pstm.setString(++index, empresa.getCelular1());
             pstm.setString(++index, empresa.getCelular2());
+            pstm.setString(++index, empresa.getContato());
             pstm.setInt(++index, empresa.getId());
             // executar
             pstm.execute();
 
             commitTransaction(connection);
             idAlterado = true;
-
+            inserirProcedimentosEmpresa(empresa.getEmpresaProcedimento(), empresa.getId());
         } catch (Exception e) {
             idAlterado = false;
             try {
@@ -160,8 +283,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             // pegar a connection
             connection = getConnection();
             beginTransaction(connection);
-
-            String sql = "delete from empresas where id = ?";
+            String sql = "delete from empresa where id = ?";
 
             pstm = connection.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -196,23 +318,23 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             switch (tipo) {
                 case 'e':
 
-                    sql = " SELECT * FROM empresas WHERE fantasia LIKE '%" + dado + "%' ORDER BY id ";
+                    sql = " SELECT * FROM empresa WHERE fantasia LIKE '%" + dado + "%' ORDER BY id ";
                     break;
 
                 case 'i':
 
-                    sql = " SELECT * FROM empresas WHERE razao_social LIKE '%" + dado + "%' ORDER BY id ";
+                    sql = " SELECT * FROM empresa WHERE razao_social LIKE '%" + dado + "%' ORDER BY id ";
                     break;
 
                 case 't':
-                    sql = " SELECT * FROM empresas WHERE cnpj = '" + dado + "' ORDER BY id ";
+                    sql = " SELECT * FROM empresa WHERE cnpj = '" + dado + "' ORDER BY id ";
                     break;
 
                 case 'a':
-                    sql = " SELECT * FROM empresas  WHERE logradouro LIKE '%" + dado + "%' ORDER BY id ";
+                    sql = " SELECT * FROM empresa  WHERE logradouro LIKE '%" + dado + "%' ORDER BY id ";
                     break;
                 case 'p':
-                    sql = " SELECT * FROM empresas WHERE id = '" + dado + "' ORDER BY id ";
+                    sql = " SELECT * FROM empresa WHERE id = '" + dado + "' ORDER BY id ";
                     break;
                 default:
                     break;
@@ -223,7 +345,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             rs = stm.executeQuery(sql);
             while (rs.next()) {
 
-                emp = RetornObjetoImagem(rs);
+                emp = RetornObjeto(rs);
 
                 empresas.add(emp);
 
@@ -241,7 +363,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
         return empresas;
     }
 
-    public Empresa buscEmpPid(int id) {
+    public Empresa buscaEmpresaPorId(int id) {
         Empresa empre = null;
         Connection connection = null;
         PreparedStatement pstm = null;
@@ -252,7 +374,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             beginTransaction(connection);
 
             // CRIAR SQL
-            String sql = " SELECT * FROM empresas  WHERE empresas.id = ? ";
+            String sql = " SELECT * FROM empresa  WHERE empresa.id = ? ";
 
             // criar o statement
             pstm = connection.prepareStatement(sql);
@@ -262,7 +384,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
 
             while (rs.next()) {
                 //desencripta
-                empre = RetornObjetoImagem(rs);
+                empre = RetornObjeto(rs);
             }
         } catch (Exception e) {
             try {
@@ -287,7 +409,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             beginTransaction(connection);
 
             // CRIAR SQL
-            String sql = "SELECT * FROM empresas  WHERE empresas.id = (SELECT MAX(id) AS maxID FROM empresas) ";
+            String sql = "SELECT * FROM empresa  WHERE empresa.id = (SELECT MAX(id) AS maxID FROM empresa) ";
 
             // criar o statement
             pstm = connection.prepareStatement(sql);
@@ -295,7 +417,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
 
             while (rs.next()) {
 
-                emp = RetornObjetoImagem(rs);
+                emp = RetornObjeto(rs);
 
             }
 
@@ -324,7 +446,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             beginTransaction(connection);
 
             // CRIAR SQL
-            String sql = " SELECT * FROM empresas WHERE empresas.id = (SELECT MIN(id) AS minID FROM empresas) ";
+            String sql = " SELECT * FROM empresa WHERE empresa.id = (SELECT MIN(id) AS minID FROM empresa) ";
 
             // criar o statement
             pstm = connection.prepareStatement(sql);
@@ -332,7 +454,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
 
             while (rs.next()) {
 
-                empr = RetornObjetoImagem(rs);
+                empr = RetornObjeto(rs);
 
             }
 
@@ -360,7 +482,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             // GERAR O ID UNICO
 
             // CRIAR SQL
-            String sql = "SELECT * FROM empresas WHERE empresas.id > '" + id + "' ORDER BY empresas.id limit 1";
+            String sql = "SELECT * FROM empresa WHERE empresa.id > '" + id + "' ORDER BY empresa.id limit 1";
 
             // criar o statement
             pstm = connection.prepareStatement(sql);
@@ -368,7 +490,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
 
             while (rs.next()) {
 
-                emp = RetornObjetoImagem(rs);
+                emp = RetornObjeto(rs);
             }
 
         } catch (Exception e) {
@@ -394,7 +516,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
             beginTransaction(connection);
 
             // CRIAR SQL
-            String sql = " SELECT * FROM empresas  WHERE empresas.id < '" + id + "' ORDER BY empresas.id desc limit 1";
+            String sql = " SELECT * FROM empresa  WHERE empresa.id < '" + id + "' ORDER BY empresa.id desc limit 1";
 
             // criar o statement
             pstm = connection.prepareStatement(sql);
@@ -402,7 +524,7 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
 
             while (rs.next()) {
 
-                emp = RetornObjetoImagem(rs);
+                emp = RetornObjeto(rs);
 
             }
 
@@ -422,27 +544,25 @@ public class CadEmpresaDAO extends AbstractConecxaoDAO {
         Empresa emp = null;
         if (rs != null) {
             Cep cep = new Cep(null, rs.getString("cep"), rs.getString("logradouro"), rs.getString("bairro"), rs.getString("municipio"), rs.getString("uf"));
-
             emp = new Empresa(rs.getInt("id"), rs.getString("fantasia"), rs.getString("razao_social"), rs.getString("email"), rs.getString("numero"), rs.getString("cnpj"),
-                    rs.getString("fone_fixo"), rs.getString("celular1"), rs.getString("celular2"), cep);
+                    rs.getString("inscricao_estadual"), rs.getString("fone_fixo"), rs.getString("celular2"), cep, rs.getString("contato"),null);
 
         }
         return emp;
     }
 
-    
-    
-    public Empresa RetornObjetoImagem(ResultSet rs) throws SQLException, IOException {
-       
-        Empresa emp = null;
-        if (rs != null) {
-            
-            Cep cep = new Cep(null, rs.getString("cep"), rs.getString("logradouro"), rs.getString("bairro"), rs.getString("municipio"), rs.getString("uf"));
-          
-            emp = new Empresa(rs.getInt("id"), rs.getString("fantasia"), rs.getString("razao_social"), rs.getString("email"), rs.getString("numero"), rs.getString("cnpj"),
-                    rs.getString("fone_fixo"), rs.getString("celular1"), rs.getString("celular2"), cep);
-
-        }
-        return emp;
-    }
+//    
+//    
+//    public Empresa RetornObjetoImagem(ResultSet rs) throws SQLException, IOException {
+//       
+//        Empresa emp = null;
+//        if (rs != null) {
+//            
+//            Cep cep = new Cep(null, rs.getString("cep"), rs.getString("logradouro"), rs.getString("bairro"), rs.getString("municipio"), rs.getString("uf"));
+//            emp = new Empresa(rs.getInt("id"), rs.getString("fantasia"), rs.getString("razao_social"), rs.getString("email"), rs.getString("numero"), rs.getString("cnpj"),
+//                    rs.getString("inscricao_estadual"), rs.getString("fone_fixo"), rs.getString("celular2"), cep,rs.getString("contato"));
+//
+//        }
+//        return emp;
+//    }
 }

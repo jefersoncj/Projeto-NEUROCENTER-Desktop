@@ -63,7 +63,7 @@
           <Color blue="66" green="66" red="66" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="CONTATO"/>
+        <Property name="text" type="java.lang.String" value="MARK CONSULTA"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -81,7 +81,7 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value=" Jeferson"/>
+        <Property name="text" type="java.lang.String" value="Contato: Jeferson"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -90,7 +90,7 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Fone: (88) 98844-5150"/>
+        <Property name="text" type="java.lang.String" value="Fone: (88) 8844-5150"/>
       </Properties>
     </Component>
   </SubComponents>

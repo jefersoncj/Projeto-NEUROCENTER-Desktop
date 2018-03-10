@@ -38,10 +38,7 @@ public class CadCondPagtoDAO extends AbstractConecxaoDAO implements ICadCondPagt
 	/**
 	 * @uml.property  name="CondPagto"
 	 */
-	private List<CondPagto> condPagtos = new ArrayList<>();
-	
-    
-        
+	private final List<CondPagto> condPagtos = new ArrayList<>();
         @Override
       public Integer inserir(CondPagto condPagto) {
     
@@ -52,38 +49,23 @@ public class CadCondPagtoDAO extends AbstractConecxaoDAO implements ICadCondPagt
 			// pegar a connection
 			connection = getConnection();
 			beginTransaction(connection);
-			// GERAR O ID UNICO
-			String selectMaxID = "SELECT MAX(id) AS maxID FROM cond_pagto";
-
-			int maxID = 0;
-                        
-
-			// criar o statement
-			pstm = connection.prepareStatement(selectMaxID);
-			rs = pstm.executeQuery();
-			while (rs.next()) {
-				maxID = rs.getInt(1);
-			}
-
 			// criar o sql
-			String sql = "INSERT INTO cond_pagto VALUES ( ?, ?)";
-
+			String sql = "INSERT INTO cond_pagto (descricao) VALUES (?)";
 			// criar o statement
-			pstm = connection.prepareStatement(sql);
-                        
-			String descricao= condPagto.getCondPagt();	
-                        
-			
+			 pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                         
 			// setar os params
 			int index = 0;
-			pstm.setInt(++index, ++maxID);
-			pstm.setString(++index, descricao);
-			
-			
-			pstm.execute();
-
+			pstm.setString(++index, condPagto.getCondPagt());
+                        
+			pstm.executeUpdate();
+                        rs = pstm.getGeneratedKeys();
+                        int id = 0;
+                        if (rs.next()) {
+                            id = rs.getInt(1);
+                        }
 			commitTransaction(connection);
-			idInserido = maxID;
+			idInserido = id;
 			
 		} catch (Exception e) {
 			
@@ -409,8 +391,6 @@ public class CadCondPagtoDAO extends AbstractConecxaoDAO implements ICadCondPagt
          public CondPagto retornObjt(ResultSet rs) throws SQLException {
 
         CondPagto esp = new CondPagto(rs.getInt("id"), rs.getString("descricao"));
-
-
 
         return esp;
 

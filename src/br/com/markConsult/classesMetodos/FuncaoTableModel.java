@@ -1,7 +1,5 @@
 package br.com.markConsult.classesMetodos;
 
-
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -23,8 +21,7 @@ import javax.swing.table.AbstractTableModel;
 public class FuncaoTableModel extends AbstractTableModel{
 //constantes que vão representar as colunas
     private final int COL_ID = 0;
-    private final int COL_DESC_SETOR = 1;
-
+    private final int COL_NOME = 1;
     
     //lista dos produtos que serão exibidos
     private List<Funcao> funcaos;
@@ -58,44 +55,47 @@ public class FuncaoTableModel extends AbstractTableModel{
     
       @Override
     public String getColumnName(int column) {
-        //qual o nome da coluna
-        if (column == COL_ID) {
-            return "Código";
-        
-        }else if (column == COL_DESC_SETOR) {
-            return "Funcao";
-        
-        }
+         //qual o nome da coluna
+         switch (column) {
+             case COL_ID:
+                 return "Código";
+             case COL_NOME:
+                 return "Descrição";
+             default:
+                 break;
+         }
         
         return "";
     }
       
       @Override
     public Class getColumnClass(int columnIndex) {
-       // retorna a classe que representa a coluna
-        if (columnIndex == COL_ID) {
-            return int.class;
-        } else if (columnIndex == COL_DESC_SETOR) {
-            return String.class;
-       }
+         // retorna a classe que representa a coluna
+         switch (columnIndex) {
+             case COL_ID:
+                 return int.class;
+             case COL_NOME:
+                 return String.class;
+             default:
+                 break;
+         }
        
         return String.class;
       }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         //pega o produto da linha
-        Funcao c = funcaos.get(rowIndex);
+        Funcao u = funcaos.get(rowIndex);
  
-        //verifica qual valor deve ser retornado
-        if (columnIndex == COL_ID){
-            return c.getId();
-        } 
-        else if (columnIndex == COL_DESC_SETOR) {
-            return c.getDescFuncao();
-        }
-    
-      
-        
+         //verifica qual valor deve ser retornado
+         switch (columnIndex) {
+             case COL_ID:
+                 return u.getId();
+             case COL_NOME:
+                 return u.getNome();
+             default:
+                 break;
+         }
       
         return "";
     
@@ -113,18 +113,13 @@ public class FuncaoTableModel extends AbstractTableModel{
         return false;
     }
      
-      public void limpaLista() {
-        funcaos.clear();
- 
-        fireTableDataChanged();
-    }
      public void listar(List<Funcao> c) {
         funcaos.clear();
         funcaos = c;
  
         fireTableDataChanged();
-        
     }
+ 
     public Funcao getItem(int pos) {
         if (pos < 0 || pos >= funcaos.size()) {
             return null;
@@ -133,4 +128,5 @@ public class FuncaoTableModel extends AbstractTableModel{
         return funcaos.get(pos);
     }
     
+
 }

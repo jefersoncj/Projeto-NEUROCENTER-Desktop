@@ -6,10 +6,10 @@
 package br.com.markConsult.gui;
 
 import br.com.markConsult.classesMetodos.FixedLengthDocument;
-import br.com.markConsult.dao.CadMinhaEmpresaDAO;
+import br.com.markConsult.dao.CadClinicaDAO;
 import br.com.markConsult.dao.CadUsuarioDAO;
-import br.com.markConsult.entidades.MinhaEmpresa;
 import br.com.markConsult.entidades.Sessao;
+import br.com.markConsult.entidades.Clinica;
 import br.com.markConsult.entidades.Usuario;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author Jeferson1
  */
 public class Login extends javax.swing.JFrame {
-    List<MinhaEmpresa> e;
+    List<Clinica> e;
     /**
      * Creates new form Login
      */
@@ -36,11 +36,11 @@ public class Login extends javax.swing.JFrame {
         tf_usuario.setDocument(new  FixedLengthDocument(15));
         tf_senha.setDocument(new  FixedLengthDocument(10));
         tf_usuario.requestFocus();
-        CadMinhaEmpresaDAO dao = new CadMinhaEmpresaDAO();
-         e =  dao.buscaEmpresa("", 'e');
-        for (MinhaEmpresa e1 : e) {
-            jC_minhaEmpresa.addItem(e1);
-        }
+        CadClinicaDAO dao = new CadClinicaDAO();
+         e =  dao.buscaEpresa("", 'e');
+         e.stream().forEach((e1) -> {
+             jC_empresa.addItem(e1);
+        });
     }
 
     /**
@@ -54,7 +54,7 @@ public class Login extends javax.swing.JFrame {
 
         jButton2 = new javax.swing.JButton();
         bt_ok = new javax.swing.JButton();
-        jC_minhaEmpresa = new javax.swing.JComboBox();
+        jC_empresa = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_senha = new javax.swing.JPasswordField();
@@ -89,7 +89,7 @@ public class Login extends javax.swing.JFrame {
         });
         getContentPane().add(bt_ok, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 90, -1));
 
-        getContentPane().add(jC_minhaEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 200, -1));
+        getContentPane().add(jC_empresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 200, -1));
 
         jLabel4.setText("Empresa:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, 20));
@@ -192,7 +192,7 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_ok;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jC_minhaEmpresa;
+    private javax.swing.JComboBox jC_empresa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -247,7 +247,7 @@ public void okSelcionado(){
         if (us != null) {
           Sessao sessao = Sessao.getInstance();
           sessao.setUsuario(us);
-          sessao.setMinhaEmpresa((MinhaEmpresa) jC_minhaEmpresa.getSelectedItem());
+          sessao.setClinica((Clinica) jC_empresa.getSelectedItem());
             dispose();
             TrocaSenha troca =   new TrocaSenha(null, true);
             troca.setaUsu(usu);
@@ -263,14 +263,12 @@ public void okSelcionado(){
            if (us != null) {
                Sessao sessao = Sessao.getInstance();
           sessao.setUsuario(us);
-          sessao.setMinhaEmpresa((MinhaEmpresa) jC_minhaEmpresa.getSelectedItem());
+          sessao.setClinica((Clinica) jC_empresa.getSelectedItem());
            dispose();
            TelaPrincipal t =  new TelaPrincipal();
            t.setVisible(true);
            //t.permicao();
-           
-          
-              
+
             }   
         else{
             JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");

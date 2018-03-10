@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consultas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4413b62f-eac4-4256-97c0-c58875fd5d16">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Arial" fontSize="12"/>
+	<style name="zebra">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#C0C0C0"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="clie" class="java.lang.String">
+		<defaultValueExpression><![CDATA["and"+" id_paciente "+"='1'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="stat" class="java.lang.String">
+		<defaultValueExpression><![CDATA[" and"+" status "+" in (1,2,3,4,5)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="conv" class="java.lang.String">
+		<defaultValueExpression><![CDATA["and"+" convenios.id "+"='1'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataIn" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="condPg" class="java.lang.String">
+		<defaultValueExpression><![CDATA["and"+" cond_pagto.id "+"='1'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ordem" class="java.lang.String">
+		<defaultValueExpression><![CDATA["data_consulta"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="med" class="java.lang.String">
+		<defaultValueExpression><![CDATA["and"+" usuarios.id "+"='1'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_empresa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  consultas.*,paci.nome,paci.num_convenio,paci.fone_fixo,paci.celular1, convenios.ds_convenio, 
+cond_pagto.descricao, status.ds_status, usuarios.usuario, empre.fantasia, empre.logradouro AS logreemp ,empre.numero AS numeroemp, empre.bairro AS bairoempr,empre.fone_fixo AS foneemp ,empre.municipio AS muniemp, empre.figura,empre.uf 
+FROM pacientes AS paci
+LEFT JOIN consultas ON consultas.id_paciente = paci.id 
+LEFT JOIN convenios ON convenios.id = consultas.id_convenio
+LEFT JOIN usuarios ON usuarios.id = consultas.id_medico
+LEFT JOIN cond_pagto ON cond_pagto.id = consultas.id_cond_pagto
+LEFT JOIN status ON status.id = consultas.status
+LEFT JOIN clinicas AS empre ON empre.id = $P{id_empresa}
+WHERE data_consulta BETWEEN $P{dataIn} AND $P{dataFin}
+$P!{stat} $P!{clie} $P!{condPg} $P!{conv} $P!{med} ORDER BY usuario,$P{ordem}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="id_convenio" class="java.lang.Integer"/>
+	<field name="id_paciente" class="java.lang.Integer"/>
+	<field name="data_consulta" class="java.sql.Date"/>
+	<field name="status" class="java.lang.Integer"/>
+	<field name="sequencia" class="java.lang.Integer"/>
+	<field name="obs" class="java.lang.String"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="id_cond_pagto" class="java.lang.Integer"/>
+	<field name="id_medico" class="java.lang.Integer"/>
+	<field name="cod_tipo" class="java.lang.Integer"/>
+	<field name="fila" class="java.lang.Boolean"/>
+	<field name="prioritario" class="java.lang.Boolean"/>
+	<field name="cod_autorizacao" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="num_convenio" class="java.lang.String"/>
+	<field name="fone_fixo" class="java.lang.String"/>
+	<field name="celular1" class="java.lang.String"/>
+	<field name="ds_convenio" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="ds_status" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="fantasia" class="java.lang.String"/>
+	<field name="logreemp" class="java.lang.String"/>
+	<field name="numeroemp" class="java.lang.String"/>
+	<field name="bairoempr" class="java.lang.String"/>
+	<field name="foneemp" class="java.lang.String"/>
+	<field name="muniemp" class="java.lang.String"/>
+	<field name="figura" class="java.lang.Object"/>
+	<field name="uf" class="java.lang.String"/>
+	<sortField name="PAGE_NUMBER" type="Variable"/>
+	<variable name="teste" class="java.lang.String"/>
+	<variable name="ds_medico_1" class="java.lang.Integer" resetType="Column" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{usuario}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+	</group>
+	<group name="Pagamento">
+		<groupExpression><![CDATA[$F{descricao}]]></groupExpression>
+	</group>
+	<group name="medico">
+		<groupExpression><![CDATA[$F{usuario}]]></groupExpression>
+		<groupHeader>
+			<band height="16">
+				<textField>
+					<reportElement uuid="6682e9d3-bc4f-49e3-bb22-541a15ea0500" isPrintRepeatedValues="false" x="2" y="0" width="340" height="13" isRemoveLineWhenBlank="true"/>
+					<textElement>
+						<font fontName="SansSerif" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pagamento: "+$F{usuario}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="108" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5e45b8c7-2552-44e9-b654-438448d7df48" x="463" y="88" width="39" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="7d056ca0-6b27-48cc-a824-ca337370803d" x="502" y="88" width="56" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataIn}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6380846f-9e58-40f2-a655-102d2ac7e3cd" x="558" y="88" width="11" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="b92c3890-9953-466b-9789-d5f16c16ec7d" x="569" y="88" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFin}]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement uuid="4da87769-0584-49fe-953f-fa6aff666aeb" x="294" y="10" width="74" height="81" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="9.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="176b2bc4-e9e7-4a99-9239-f975e459d5e9" x="2" y="89" width="295" height="1" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="10.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="090f3812-a05b-47fc-8565-45f221d1deb7" x="365" y="11" width="435" height="1" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="10.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<image>
+				<reportElement uuid="9e0c43e2-8a76-441a-b0aa-52334781a4e8" x="17" y="10" width="89" height="68"/>
+				<imageExpression><![CDATA[new ByteArrayInputStream((byte[])$F{figura})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="6056fe54-f347-4ae9-bb7d-d6ea451fb31e" x="420" y="49" width="289" height="33" forecolor="#666666"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Consultas]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9dbf5da4-587f-4374-8c98-cc8400c6f4c3" x="117" y="12" width="89" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fantasia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f0e875a-77fa-46df-8d7a-de4a335dd9e4" x="117" y="23" width="212" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{logreemp}+", "+$F{numeroemp}+", "+$F{bairoempr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7982dd12-55f4-48aa-bbde-2f821841c56a" x="117" y="35" width="198" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{muniemp}+" - "+$F{uf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="77849518-430a-4159-991c-721c4ae38e38" x="117" y="46" width="198" height="13"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FONE: "+$F{foneemp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bc6107cd-771c-44ad-8438-89a640fbfd13" mode="Opaque" x="2" y="0" width="49" height="23" backcolor="#C2C0C0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b89d658f-4e4d-4039-9c68-3af95bbe797f" mode="Opaque" x="466" y="0" width="144" height="23" backcolor="#C2C0C0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[CONVÊNIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="efd6a41a-e354-4efa-89bc-c663c9a035c3" mode="Opaque" x="680" y="0" width="44" height="23" backcolor="#C2C0C0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c815de11-c1e5-4330-b32c-00d98f17d104" mode="Opaque" x="724" y="0" width="77" height="23" backcolor="#C2C0C0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[STATUS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b10f6fd4-4307-4516-bd31-4dacc1b550e7" mode="Opaque" x="51" y="0" width="169" height="23" backcolor="#C0C0C0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true"/>
+					<paragraph firstLineIndent="4" leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[PACIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e933c1b9-dc51-429b-8bb2-8af5afc11c0e" mode="Opaque" x="220" y="0" width="148" height="23" backcolor="#C0C0C0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+					<paragraph firstLineIndent="4" leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3423b89d-4594-41eb-8eae-61916994e98f" mode="Opaque" x="610" y="0" width="70" height="23" backcolor="#C2C0C0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8c50c507-ebeb-4046-8a0b-60a9d01e398d" mode="Opaque" x="368" y="0" width="98" height="23" backcolor="#C2C0C0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Nº CONVÊNIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="7ec1ea71-976c-49a1-b705-9b6be5dd196b" style="zebra" mode="Opaque" x="2" y="0" width="49" height="15" printWhenGroupChanges="Group1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_consulta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="37a7d652-de50-481b-b7df-380214db5051" style="zebra" mode="Opaque" x="51" y="0" width="169" height="15" printWhenGroupChanges="Group1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+					<paragraph firstLineIndent="2" leftIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="66bbbd58-3ad8-4306-b6bb-f8327c664330" style="zebra" mode="Opaque" x="368" y="0" width="98" height="15" printWhenGroupChanges="Group1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_convenio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3b9fbbac-6c86-4a61-98f5-60c0faed47cb" style="zebra" mode="Opaque" x="466" y="0" width="144" height="15" printWhenGroupChanges="Group1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ds_convenio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="baff4a3b-8057-47f5-9dda-da4dd515229e" style="zebra" mode="Opaque" x="675" y="0" width="49" height="15" printWhenGroupChanges="Group1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2c44b2c6-1b5b-43c4-ae10-745d5cc6fd5f" style="zebra" mode="Opaque" x="724" y="0" width="77" height="15" printWhenGroupChanges="Group1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ds_status}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1c0e188d-9e4c-4236-98d3-f225fc6083c7" style="zebra" mode="Opaque" x="610" y="0" width="65" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cod_autorizacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d27c2979-bfa6-487d-a39a-181c42254e46" style="zebra" mode="Opaque" x="220" y="0" width="148" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="ceffad89-e9b5-4855-829d-a0d837f971a7" x="2" y="0" width="192" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="a5c43b5a-524b-4f64-b3f6-04182a98ee43" x="752" y="0" width="40" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4cec738d-7a48-40f1-a6e6-7051ae7d466d" x="665" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

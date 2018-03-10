@@ -11,7 +11,7 @@ package br.com.markConsult.entidades;
 public class Sessao {
     private static Sessao instance = null;  
    private Usuario usuario;  
-   private MinhaEmpresa minhaEmpresa;  
+   private Clinica clinica;  
   
    private Sessao(){  
    }  
@@ -19,14 +19,14 @@ public class Sessao {
    public void setUsuario(Usuario usuario){  
       this.usuario = usuario;  
    }  
-   public void setMinhaEmpresa(MinhaEmpresa empresa){  
-      this.minhaEmpresa = empresa;  
+   public void setClinica(Clinica clinica){  
+      this.clinica = clinica;  
    }
    public Usuario getUsuario(){  
        return usuario;  
    }  
-   public MinhaEmpresa getMinhaEmpresa(){  
-       return minhaEmpresa;  
+   public Clinica getClinica(){  
+       return clinica;  
    }  
    public static Sessao getInstance(){  
          if(instance == null){  

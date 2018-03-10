@@ -8,8 +8,8 @@ import br.com.markConsult.dao.AlteraImagemDAO;
 import br.com.markConsult.classesMetodos.BackGround;
 import br.com.markConsult.dao.CadUsuarioDAO;
 import br.com.markConsult.dao.Desktop;
-import br.com.markConsult.entidades.MinhaEmpresa;
 import br.com.markConsult.entidades.Sessao;
+import br.com.markConsult.entidades.Clinica;
 import br.com.markConsult.entidades.Usuario;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -17,13 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,25 +35,25 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author jeferson
  */
 public class TelaPrincipal extends javax.swing.JFrame {
-    private final Properties confBanco = new Properties();
+
+   
     Desktop desk = new Desktop();
     Boolean escBarra;
     BackGround background = null;
     int trocar = 1;
     Usuario u;
-    MinhaEmpresa minnhaEmpresa;
+    Clinica emp;
     String data = (new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(System.currentTimeMillis())));
 
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
-        initComponents();            
-                
-
+        initComponents();
+        jMenu2.setVisible(false);
         lbData.setText(" " + data);
         u = Sessao.getInstance().getUsuario();
-        minnhaEmpresa = Sessao.getInstance().getMinhaEmpresa();
+        emp = Sessao.getInstance().getClinica();
         if (u != null) {
             lb_usuario.setText(u.getNome());
             escBarra = u.isEscBarra();
@@ -68,17 +63,117 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         }
 
-        if (minnhaEmpresa != null) {
-            jL_empresa.setText(minnhaEmpresa.getFantasia());
+        if (emp != null) {
+            jL_empresa.setText(emp.getFantasia());
 
         }
-
-
-        if (u.isHeAdm()) {
-            jmiCadUsuario.setVisible(true);
-        } else {
+        
+//          if (u.isHeAdm()) {
+//            jM_fila.setVisible(false);
+//            btListCon.setVisible(false);
+//        } 
+        if (u.isHeMedico()) {
+            jM_ficha.setVisible(true);
+            jM_fila.setVisible(true);
+            jMenu_consultas.setVisible(false);
+            btConsultas.setVisible(false);
+            bt_marcaConsultas.setVisible(false);
+            bt_buscaConsultas.setVisible(false);
+            btRelCon.setVisible(false);
+            bt_condPagto.setVisible(false);
+            bt_convenios.setVisible(false);
+            bt_empresas.setVisible(false);
+            jMenu_relatorios.setVisible(false);
+            jMenuItem_especialidades.setVisible(false);
+            jMenuItem_condPagto.setVisible(false);
+            menu_item_convenios.setVisible(false);
+            jMenuIt_procedimentos.setVisible(false);
             jmiCadUsuario.setVisible(false);
+            menuClinica.setVisible(false);
+            menuEmpresas.setVisible(false);
+            jM_funcoes.setVisible(false);
+            
+            jSeparator1.setVisible(false);
+            jSeparator2.setVisible(false);
+            jSeparator3.setVisible(false);
+            jSeparator4.setVisible(false);
+            jSeparator6.setVisible(false);
+            jSeparator7.setVisible(false);
+            jSeparator9.setVisible(false);
+            jSeparator10.setVisible(false);
+            jSeparator11.setVisible(false);
+            jSeparator13.setVisible(false);
+            
+        } 
+        
+        if (u.isHeAdm() && u.isHeMedico()  ) {
+            jM_ficha.setVisible(true);
+            jM_fila.setVisible(true);
+            jMenu_consultas.setVisible(true);
+            btConsultas.setVisible(true);
+            bt_marcaConsultas.setVisible(true);
+            bt_buscaConsultas.setVisible(true);
+            btRelCon.setVisible(true);
+            bt_condPagto.setVisible(true);
+            bt_convenios.setVisible(true);
+            bt_empresas.setVisible(true);
+            jMenu_relatorios.setVisible(true);
+            jMenuItem_especialidades.setVisible(true);
+            jMenuItem_condPagto.setVisible(true);
+            menu_item_convenios.setVisible(true);
+            jMenuIt_procedimentos.setVisible(true);
+            jmiCadUsuario.setVisible(true);
+            menuClinica.setVisible(true);
+            menuEmpresas.setVisible(true);
+            jM_funcoes.setVisible(true);
+            
+            
+            jSeparator1.setVisible(true);
+            jSeparator2.setVisible(true);
+            jSeparator3.setVisible(true);
+            jSeparator4.setVisible(true);
+            jSeparator6.setVisible(true);
+            jSeparator7.setVisible(true);
+            jSeparator9.setVisible(true);
+            jSeparator10.setVisible(true);
+            jSeparator11.setVisible(true);
+            jSeparator13.setVisible(true);
         }
+        
+         if (u.isHeAtendente()) {
+            jMenu_consultas.setVisible(true);
+            btConsultas.setVisible(true);
+           bt_marcaConsultas.setVisible(true);
+            btListCon.setVisible(false);
+            jM_fila.setVisible(false);
+            bt_buscaConsultas.setVisible(true);
+            btRelCon.setVisible(true);
+            bt_condPagto.setVisible(true);
+            bt_convenios.setVisible(true);
+            bt_empresas.setVisible(true);
+            jMenu_relatorios.setVisible(true);
+            jMenuItem_especialidades.setVisible(true);
+            jMenuItem_condPagto.setVisible(true);
+            menu_item_convenios.setVisible(true);
+            jMenuIt_procedimentos.setVisible(true);
+            jmiCadUsuario.setVisible(false);
+            menuClinica.setVisible(true);
+            menuEmpresas.setVisible(true);
+            jM_funcoes.setVisible(true);
+            
+            
+            jSeparator1.setVisible(true);
+            jSeparator2.setVisible(true);
+            jSeparator3.setVisible(true);
+            jSeparator4.setVisible(true);
+            jSeparator6.setVisible(true);
+            jSeparator7.setVisible(true);
+            jSeparator9.setVisible(true);
+            jSeparator10.setVisible(true);
+            jSeparator11.setVisible(true);
+            jSeparator13.setVisible(true);
+        } 
+        
         if (u.getCodTema() == 8) {
             addpopup();
         }
@@ -90,17 +185,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        
-        
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  
-         this.addWindowListener(new java.awt.event.WindowAdapter() {  
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {  
-                    if (e.getID() == WindowEvent.WINDOW_CLOSING){  
-                       fecharTela();
-                }  
-            }});
-         
+
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+                    fecharTela();
+                }
+            }
+        });
 
     }
 
@@ -122,40 +216,60 @@ public class TelaPrincipal extends javax.swing.JFrame {
         desktopPane =  background;
         barraFerrament = new javax.swing.JToolBar();
         btCadPaciente = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        bt_marcaConsultas = new javax.swing.JButton();
+        btConsultas = new javax.swing.JButton();
+        bt_buscaPaciente = new javax.swing.JButton();
+        btListCon = new javax.swing.JButton();
+        bt_buscaConsultas = new javax.swing.JButton();
         btRelCon = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        bt_condPagto = new javax.swing.JButton();
+        bt_convenios = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        bt_empresas = new javax.swing.JButton();
+        bt_acuidade = new javax.swing.JButton();
         lb_barra = new javax.swing.JLabel();
         jL_empresa = new javax.swing.JLabel();
         menu_principal = new javax.swing.JMenuBar();
         menu_cadastros = new javax.swing.JMenu();
+        jMenuItem_especialidades = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menu_item_Paciente = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem_condPagto = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        menu_item_convenios = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        jMenuIt_procedimentos = new javax.swing.JMenuItem();
+        jSeparator12 = new javax.swing.JPopupMenu.Separator();
         menuUsuario = new javax.swing.JMenu();
         jmiCadUsuario = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
         jmiAlteraSenh = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
-        menuEmpresas = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu_pcmso = new javax.swing.JMenu();
-        jMenuCadastros = new javax.swing.JMenu();
-        jMenuItemSetores = new javax.swing.JMenuItem();
-        jMenuItemFuncoes = new javax.swing.JMenuItem();
-        jMenuItemTipoRisco = new javax.swing.JMenuItem();
-        jMenuItemRiscos = new javax.swing.JMenuItem();
-        jMenuItemExames = new javax.swing.JMenuItem();
-        jMenuItemPeriodicidade = new javax.swing.JMenuItem();
+        menuClinica = new javax.swing.JMenuItem();
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
-        menu_item_Paciente = new javax.swing.JMenuItem();
+        menuEmpresas = new javax.swing.JMenuItem();
         jSeparator13 = new javax.swing.JPopupMenu.Separator();
-        jM_cadastro_empresas = new javax.swing.JMenuItem();
-        jSeparator14 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jSeparator12 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemBuscaOrdens = new javax.swing.JMenuItem();
+        jM_funcoes = new javax.swing.JMenuItem();
+        menu_atendimento = new javax.swing.JMenu();
+        jMenu_consultas = new javax.swing.JMenu();
+        menu_item_conAgenda = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        menu_item_cadConsuta = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        menu_item_consulPclient = new javax.swing.JMenuItem();
+        jM_fila = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu_relatorios = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jM_ficha = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenuItemAjuda = new javax.swing.JMenuItem();
@@ -170,7 +284,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuIMint = new javax.swing.JMenuItem();
         jMenuIMcWinLook = new javax.swing.JMenuItem();
         jMenuAero = new javax.swing.JMenuItem();
-        salvaArquivo = new javax.swing.JMenuItem();
 
         jMEsconder.setText("Esconder Barra");
         jMEsconder.addActionListener(new java.awt.event.ActionListener() {
@@ -227,20 +340,68 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         barraFerrament.add(btCadPaciente);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/BuscaConsultas.png"))); // NOI18N
-        jButton4.setToolTipText("Lista Consultas");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        bt_marcaConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/consultas.png"))); // NOI18N
+        bt_marcaConsultas.setToolTipText("Cadastro de Consultas");
+        bt_marcaConsultas.setFocusable(false);
+        bt_marcaConsultas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_marcaConsultas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_marcaConsultas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                bt_marcaConsultasActionPerformed(evt);
             }
         });
-        barraFerrament.add(jButton4);
+        barraFerrament.add(bt_marcaConsultas);
+
+        btConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/consultasAgend.png"))); // NOI18N
+        btConsultas.setToolTipText("Consultas agendadas");
+        btConsultas.setFocusable(false);
+        btConsultas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btConsultas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btConsultasActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(btConsultas);
+
+        bt_buscaPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/buscaPaciente.png"))); // NOI18N
+        bt_buscaPaciente.setToolTipText("Busca Paciente");
+        bt_buscaPaciente.setFocusable(false);
+        bt_buscaPaciente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_buscaPaciente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_buscaPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_buscaPacienteActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_buscaPaciente);
+
+        btListCon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/listCon.png"))); // NOI18N
+        btListCon.setToolTipText("Atendimento");
+        btListCon.setFocusable(false);
+        btListCon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btListCon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btListCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btListConActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(btListCon);
+
+        bt_buscaConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/BuscaConsultas.png"))); // NOI18N
+        bt_buscaConsultas.setToolTipText("Lista Consultas");
+        bt_buscaConsultas.setFocusable(false);
+        bt_buscaConsultas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_buscaConsultas.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_buscaConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_buscaConsultasActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_buscaConsultas);
 
         btRelCon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/relatórios.png"))); // NOI18N
-        btRelCon.setToolTipText("Relatório de Ordens");
+        btRelCon.setToolTipText("Relatório de consultas");
         btRelCon.setFocusable(false);
         btRelCon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btRelCon.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -263,8 +424,66 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         barraFerrament.add(jButton2);
 
+        bt_condPagto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/payment-icon.png"))); // NOI18N
+        bt_condPagto.setMnemonic('C');
+        bt_condPagto.setToolTipText("Condição de pagamento");
+        bt_condPagto.setFocusable(false);
+        bt_condPagto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_condPagto.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_condPagto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_condPagtoActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_condPagto);
+
+        bt_convenios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/contacts-icon.png"))); // NOI18N
+        bt_convenios.setToolTipText("Convênios");
+        bt_convenios.setFocusable(false);
+        bt_convenios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_convenios.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_convenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_conveniosActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_convenios);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/file.png"))); // NOI18N
+        jButton6.setToolTipText("Documento e imagens Paciente");
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(jButton6);
+
+        bt_empresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/company.png"))); // NOI18N
+        bt_empresas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_empresasActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_empresas);
+
+        bt_acuidade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/acuidade.png"))); // NOI18N
+        bt_acuidade.setMnemonic('A');
+        bt_acuidade.setToolTipText("Teste de Acuidade Visual");
+        bt_acuidade.setFocusable(false);
+        bt_acuidade.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        bt_acuidade.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        bt_acuidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_acuidadeActionPerformed(evt);
+            }
+        });
+        barraFerrament.add(bt_acuidade);
+
         desktopPane.add(barraFerrament);
-        barraFerrament.setBounds(0, 0, 60, 450);
+        barraFerrament.setBounds(0, 0, 60, 520);
 
         lb_barra.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -284,6 +503,55 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menu_cadastros.setBorderPainted(true);
         menu_cadastros.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         menu_cadastros.setPreferredSize(new java.awt.Dimension(70, 76));
+
+        jMenuItem_especialidades.setText("Especialidades Médicas");
+        jMenuItem_especialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_especialidadesActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(jMenuItem_especialidades);
+        menu_cadastros.add(jSeparator1);
+
+        menu_item_Paciente.setMnemonic('c');
+        menu_item_Paciente.setText("Pacientes");
+        menu_item_Paciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_item_PacienteActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(menu_item_Paciente);
+        menu_cadastros.add(jSeparator3);
+
+        jMenuItem_condPagto.setMnemonic('C');
+        jMenuItem_condPagto.setText("Cond. Pagamentos");
+        jMenuItem_condPagto.setMaximumSize(getMaximumSize());
+        jMenuItem_condPagto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_condPagtoActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(jMenuItem_condPagto);
+        menu_cadastros.add(jSeparator2);
+
+        menu_item_convenios.setMnemonic('C');
+        menu_item_convenios.setText("Convênios");
+        menu_item_convenios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_item_conveniosActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(menu_item_convenios);
+        menu_cadastros.add(jSeparator4);
+
+        jMenuIt_procedimentos.setText("Procedimentos");
+        jMenuIt_procedimentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuIt_procedimentosActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(jMenuIt_procedimentos);
+        menu_cadastros.add(jSeparator12);
 
         menuUsuario.setMnemonic('U');
         menuUsuario.setText("Usuários");
@@ -308,144 +576,148 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menu_cadastros.add(menuUsuario);
         menu_cadastros.add(jSeparator10);
 
-        menuEmpresas.setText("Minha empresa");
+        menuClinica.setText("Clínica");
+        menuClinica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuClinicaActionPerformed(evt);
+            }
+        });
+        menu_cadastros.add(menuClinica);
+        menu_cadastros.add(jSeparator11);
+
+        menuEmpresas.setText("Empresas");
         menuEmpresas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuEmpresasActionPerformed(evt);
             }
         });
         menu_cadastros.add(menuEmpresas);
+        menu_cadastros.add(jSeparator13);
 
-        jMenuItem2.setText("ASO");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jM_funcoes.setText("Funções");
+        jM_funcoes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jM_funcoesActionPerformed(evt);
             }
         });
-        menu_cadastros.add(jMenuItem2);
+        menu_cadastros.add(jM_funcoes);
 
         menu_principal.add(menu_cadastros);
 
-        jMenu_pcmso.setText("PCMSO");
+        menu_atendimento.setMnemonic('o');
+        menu_atendimento.setText("Consultas");
+        menu_atendimento.setBorderPainted(true);
+        menu_atendimento.setPreferredSize(new java.awt.Dimension(70, 76));
 
-        jMenuCadastros.setText("Cadastros");
+        jMenu_consultas.setMnemonic('C');
+        jMenu_consultas.setText("Consultas");
 
-        jMenuItemSetores.setText("Setores");
-        jMenuItemSetores.addActionListener(new java.awt.event.ActionListener() {
+        menu_item_conAgenda.setText("Consulta agendadas");
+        menu_item_conAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemSetoresActionPerformed(evt);
+                menu_item_conAgendaActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemSetores);
+        jMenu_consultas.add(menu_item_conAgenda);
+        jMenu_consultas.add(jSeparator6);
 
-        jMenuItemFuncoes.setText("Funções");
-        jMenuItemFuncoes.addActionListener(new java.awt.event.ActionListener() {
+        menu_item_cadConsuta.setText("Cadastro de Consulta");
+        menu_item_cadConsuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemFuncoesActionPerformed(evt);
+                menu_item_cadConsutaActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemFuncoes);
+        jMenu_consultas.add(menu_item_cadConsuta);
+        jMenu_consultas.add(jSeparator7);
 
-        jMenuItemTipoRisco.setText("Tipo de Risco");
-        jMenuItemTipoRisco.addActionListener(new java.awt.event.ActionListener() {
+        menu_item_consulPclient.setText("Lista Consultas");
+        menu_item_consulPclient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemTipoRiscoActionPerformed(evt);
+                menu_item_consulPclientActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemTipoRisco);
+        jMenu_consultas.add(menu_item_consulPclient);
 
-        jMenuItemRiscos.setText("Riscos");
-        jMenuItemRiscos.addActionListener(new java.awt.event.ActionListener() {
+        menu_atendimento.add(jMenu_consultas);
+
+        jM_fila.setText("Atendimento");
+        jM_fila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemRiscosActionPerformed(evt);
+                jM_filaActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemRiscos);
+        menu_atendimento.add(jM_fila);
 
-        jMenuItemExames.setText("Exames");
-        jMenuItemExames.addActionListener(new java.awt.event.ActionListener() {
+        menu_principal.add(menu_atendimento);
+
+        jMenu4.setText("Exames");
+
+        jMenuItem8.setText("Acuidade Visual");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExamesActionPerformed(evt);
+                jMenuItem8ActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemExames);
+        jMenu4.add(jMenuItem8);
 
-        jMenuItemPeriodicidade.setText("Periodicidade");
-        jMenuItemPeriodicidade.addActionListener(new java.awt.event.ActionListener() {
+        menu_principal.add(jMenu4);
+
+        jMenu2.setText("Controle Notas");
+
+        jMenuItem6.setText("Busca notas");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemPeriodicidadeActionPerformed(evt);
+                jMenuItem6ActionPerformed(evt);
             }
         });
-        jMenuCadastros.add(jMenuItemPeriodicidade);
+        jMenu2.add(jMenuItem6);
 
-        jMenu_pcmso.add(jMenuCadastros);
-        jMenu_pcmso.add(jSeparator11);
+        menu_principal.add(jMenu2);
 
-        menu_item_Paciente.setText("Pacientes");
-        menu_item_Paciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_item_PacienteActionPerformed(evt);
-            }
-        });
-        jMenu_pcmso.add(menu_item_Paciente);
-        jMenu_pcmso.add(jSeparator13);
+        jMenu_relatorios.setMnemonic('R');
+        jMenu_relatorios.setText("Relatórios");
+        jMenu_relatorios.setBorderPainted(true);
+        jMenu_relatorios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu_relatorios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jMenu_relatorios.setPreferredSize(new java.awt.Dimension(70, 76));
 
-        jM_cadastro_empresas.setText("Cadastro de empresas");
-        jM_cadastro_empresas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jM_cadastro_empresasActionPerformed(evt);
-            }
-        });
-        jMenu_pcmso.add(jM_cadastro_empresas);
-        jMenu_pcmso.add(jSeparator14);
-
-        jMenuItem1.setText("Cadastro de PCMSO");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu_pcmso.add(jMenuItem1);
-
-        menu_principal.add(jMenu_pcmso);
-
-        jMenu3.setText("Ordens");
-
-        jMenuItem7.setText("Ordem para exames");
+        jMenuItem7.setText("Movimento por condição de pagamento");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem7);
-        jMenu3.add(jSeparator12);
+        jMenu_relatorios.add(jMenuItem7);
 
-        jMenuItemBuscaOrdens.setText("Busca Ordens");
-        jMenuItemBuscaOrdens.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemBuscaOrdensActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItemBuscaOrdens);
-
-        menu_principal.add(jMenu3);
-
-        jMenu2.setMnemonic('R');
-        jMenu2.setText("Relatórios");
-        jMenu2.setBorderPainted(true);
-        jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jMenu2.setPreferredSize(new java.awt.Dimension(70, 76));
-
-        jMenuItem3.setText("Ordens para exames");
+        jMenuItem3.setText("Consultas");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        jMenu_relatorios.add(jMenuItem3);
 
-        menu_principal.add(jMenu2);
+        jMenuItem2.setText("Empresas com movimento");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu_relatorios.add(jMenuItem2);
+
+        menu_principal.add(jMenu_relatorios);
+
+        jM_ficha.setText("Ficha/Receita");
+
+        jMenuItem1.setText("Ficha/Receita");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jM_ficha.add(jMenuItem1);
+
+        menu_principal.add(jM_ficha);
 
         jMenu1.setMnemonic('s');
         jMenu1.setText("Sair");
@@ -547,14 +819,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenu6.add(jMenu7);
 
-        salvaArquivo.setText("Backup");
-        salvaArquivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvaArquivoActionPerformed(evt);
-            }
-        });
-        jMenu6.add(salvaArquivo);
-
         menu_principal.add(jMenu6);
 
         setJMenuBar(menu_principal);
@@ -589,7 +853,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-      fecharTela();
+        fecharTela();
 
     }//GEN-LAST:event_jMenu1MouseClicked
 
@@ -602,11 +866,42 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menu_item_PacienteActionPerformed
 
+    private void menu_item_consulPclientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_consulPclientActionPerformed
+
+        if (abreFrame("VerConsultas") == null) {
+            desk.createFrame(new VerConsultas(), desktopPane);
+        }
+    }//GEN-LAST:event_menu_item_consulPclientActionPerformed
+
+    private void menu_item_conAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_conAgendaActionPerformed
+
+        try {
+            if (abreFrame("CadConsultas") == null) {
+                desk.createFrame(new AgendaConsultas(), desktopPane);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_menu_item_conAgendaActionPerformed
+
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        if (abreFrame("RelaOrdens") == null) {
-            desk.createFrame(new RelaOrdens(), desktopPane);
+        if (abreFrame("RelaConsultas") == null) {
+            desk.createFrame(new RelaConsultas(), desktopPane);
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem_condPagtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_condPagtoActionPerformed
+        if (abreFrame("CadCondPagto") == null) {
+            desk.createFrame(new CadCondPagto(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuItem_condPagtoActionPerformed
+
+    private void menu_item_conveniosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_conveniosActionPerformed
+        if (abreFrame("CadConvenio") == null) {
+            desk.createFrame(new CadConvenio(), desktopPane);
+        }
+    }//GEN-LAST:event_menu_item_conveniosActionPerformed
 
     private void jmiCadUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiCadUsuarioActionPerformed
         if (abreFrame("CadUsuario") == null) {
@@ -642,11 +937,33 @@ public class TelaPrincipal extends javax.swing.JFrame {
         escBlo();
     }//GEN-LAST:event_jMBloquearActionPerformed
 
-    private void menuEmpresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpresasActionPerformed
-        if (abreFrame("CadMinhaEmpresa") == null) {
-            desk.createFrame(new CadMinhaEmpresa(), desktopPane);
+    private void menuClinicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClinicaActionPerformed
+        if (abreFrame("CadClinica") == null) {
+            desk.createFrame(new CadClinica(), desktopPane);
         }
-    }//GEN-LAST:event_menuEmpresasActionPerformed
+    }//GEN-LAST:event_menuClinicaActionPerformed
+
+    private void jMenuIt_procedimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuIt_procedimentosActionPerformed
+        if (abreFrame("CadProcedimento") == null) {
+            desk.createFrame(new CadProcedimento(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuIt_procedimentosActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (abreFrame("CadAnamnese") == null) {
+            desk.createFrame(new Ficha(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jM_filaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jM_filaActionPerformed
+        try {
+            if (abreFrame("Atendimento") == null) {
+                desk.createFrame(new Atendimento(), desktopPane);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jM_filaActionPerformed
 
     private void jMenuItemAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAjudaActionPerformed
         Ajuda ajuda = new Ajuda(this, true);
@@ -666,6 +983,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lb_barraMouseMoved
 
+    private void bt_conveniosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_conveniosActionPerformed
+        if (abreFrame("CadConvenio") == null) {
+            desk.createFrame(new CadConvenio(), desktopPane);
+        }
+    }//GEN-LAST:event_bt_conveniosActionPerformed
+
+    private void bt_condPagtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_condPagtoActionPerformed
+        if (abreFrame("CadCondPagto") == null) {
+            desk.createFrame(new CadCondPagto(), desktopPane);
+        }
+    }//GEN-LAST:event_bt_condPagtoActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (abreFrame("TrocSenhaUso") == null) {
             desk.createFrame(new TrocSenhaUso(), desktopPane);
@@ -673,16 +1002,38 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btRelConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRelConActionPerformed
-        if (abreFrame("RelaOrdens") == null) {
-            desk.createFrame(new RelaOrdens(), desktopPane);
+        if (abreFrame("RelaConsultas") == null) {
+            desk.createFrame(new RelaConsultas(), desktopPane);
         }
     }//GEN-LAST:event_btRelConActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (abreFrame("BuscaOrdem") == null) {
-           desk.createFrame(new BuscaOrdem(), desktopPane);
+    private void bt_buscaConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscaConsultasActionPerformed
+        if (abreFrame("VerConsultas") == null) {
+            desk.createFrame(new VerConsultas(), desktopPane);
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_bt_buscaConsultasActionPerformed
+
+    private void btListConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btListConActionPerformed
+
+        try {
+            if (abreFrame("Atendimento") == null) {
+                desk.createFrame(new Atendimento(), desktopPane);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btListConActionPerformed
+
+    private void btConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConsultasActionPerformed
+        try {
+            if (abreFrame("AgendaConsultas"
+                    + "") == null) {
+                desk.createFrame(new AgendaConsultas(), desktopPane);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btConsultasActionPerformed
 
     private void btCadPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadPacienteActionPerformed
         if (abreFrame("CadPaciente") == null) {
@@ -746,86 +1097,83 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
-    private void salvaArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvaArquivoActionPerformed
-
-        File arq = new File("neurocenter.backup");
-        try {
-            createSaveDialog(arq);
-        } catch (IOException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+    private void jMenuItem_especialidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_especialidadesActionPerformed
+        if (abreFrame("CadEspecialidade") == null) {
+            desk.createFrame(new CadEspecialidade(), desktopPane);
         }
+    }//GEN-LAST:event_jMenuItem_especialidadesActionPerformed
 
-    }//GEN-LAST:event_salvaArquivoActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       if (abreFrame("CadPCMSO") == null) {
-            desk.createFrame(new CadPCMSO(),desktopPane);
+    private void bt_buscaPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscaPacienteActionPerformed
+        if (abreFrame("BuscaPacientes") == null) {
+            desk.createFrame(new BuscaPacientes(), desktopPane);
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_bt_buscaPacienteActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        if (abreFrame("GeraOrdem") == null) {
-            desk.createFrame(new GeraOrdem(),desktopPane);
+    private void bt_marcaConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_marcaConsultasActionPerformed
+        if (abreFrame("CadConsulta") == null) {
+            desk.createFrame(new CadConsulta(), desktopPane);
         }
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_bt_marcaConsultasActionPerformed
 
-    private void jM_cadastro_empresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jM_cadastro_empresasActionPerformed
+    private void menu_item_cadConsutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_item_cadConsutaActionPerformed
+        if (abreFrame("CadConsulta") == null) {
+            desk.createFrame(new CadConsulta(), desktopPane);
+        }
+    }//GEN-LAST:event_menu_item_cadConsutaActionPerformed
 
+    private void menuEmpresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpresasActionPerformed
         if (abreFrame("CadEmpresa") == null) {
             desk.createFrame(new CadEmpresa(), desktopPane);
         }
+    }//GEN-LAST:event_menuEmpresasActionPerformed
 
-    }//GEN-LAST:event_jM_cadastro_empresasActionPerformed
-
-    private void jMenuItemSetoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSetoresActionPerformed
-      if (abreFrame("CadSetor") == null) {
-            desk.createFrame(new CadSetor(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemSetoresActionPerformed
-
-    private void jMenuItemFuncoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFuncoesActionPerformed
-      if (abreFrame("CadFuncao") == null) {
+    private void jM_funcoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jM_funcoesActionPerformed
+              if (abreFrame("CadFuncao") == null) {
             desk.createFrame(new CadFuncao(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemFuncoesActionPerformed
+        }
+    }//GEN-LAST:event_jM_funcoesActionPerformed
 
-    private void jMenuItemRiscosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRiscosActionPerformed
-       if (abreFrame("CadRisco") == null) {
-            desk.createFrame(new CadRisco(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemRiscosActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+            if (abreFrame("Ficha") == null) {
+            desk.createFrame(new Ficha(), desktopPane);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jMenuItemExamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExamesActionPerformed
-       if (abreFrame("CadExame") == null) {
-            desk.createFrame(new CadExame(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemExamesActionPerformed
+    private void bt_empresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_empresasActionPerformed
+            if (abreFrame("CadEmpresa") == null) {
+            desk.createFrame(new CadEmpresa(), desktopPane);
+        }
+    }//GEN-LAST:event_bt_empresasActionPerformed
 
-    private void jMenuItemTipoRiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTipoRiscoActionPerformed
-       if (abreFrame("CadTipoRisco") == null) {
-            desk.createFrame(new CadTipoRisco(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemTipoRiscoActionPerformed
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+          if (abreFrame("RelaMovimento") == null) {
+            desk.createFrame(new RelaMovimento(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
-    private void jMenuItemPeriodicidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPeriodicidadeActionPerformed
-        if (abreFrame("CadPeriodicidade") == null) {
-            desk.createFrame(new CadPeriodicidade(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemPeriodicidadeActionPerformed
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+          if (abreFrame("AcuidadeVisual") == null) {
+            desk.createFrame(new CadAcuidadeVisual(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    private void jMenuItemBuscaOrdensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBuscaOrdensActionPerformed
-       if (abreFrame("BuscaOrdem") == null) {
-            desk.createFrame(new BuscaOrdem(), desktopPane);
-        } 
-    }//GEN-LAST:event_jMenuItemBuscaOrdensActionPerformed
+    private void bt_acuidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_acuidadeActionPerformed
+       if (abreFrame("AcuidadeVisual") == null) {
+            desk.createFrame(new CadAcuidadeVisual(), desktopPane);
+        }
+    }//GEN-LAST:event_bt_acuidadeActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if (abreFrame("CadASO") == null) {
-            desk.createFrame(new CadASO(), desktopPane);
-        } 
+       if (abreFrame("RelaMovimentoPorEmpresa") == null) {
+            desk.createFrame(new RelaMovimentoPorEmpresa(), desktopPane);
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+      if (abreFrame("ControleNotas") == null) {
+            desk.createFrame(new ControleNotas(), desktopPane);
+        }
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -856,61 +1204,80 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerrament;
     private javax.swing.JButton btCadPaciente;
+    private javax.swing.JButton btConsultas;
+    private javax.swing.JButton btListCon;
     private javax.swing.JButton btRelCon;
+    private javax.swing.JButton bt_acuidade;
+    private javax.swing.JButton bt_buscaConsultas;
+    private javax.swing.JButton bt_buscaPaciente;
+    private javax.swing.JButton bt_condPagto;
+    private javax.swing.JButton bt_convenios;
+    private javax.swing.JButton bt_empresas;
+    private javax.swing.JButton bt_marcaConsultas;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jL_empresa;
     private javax.swing.JMenuItem jMBloquear;
     private javax.swing.JMenuItem jMEsconder;
-    private javax.swing.JMenuItem jM_cadastro_empresas;
+    private javax.swing.JMenu jM_ficha;
+    private javax.swing.JMenuItem jM_fila;
+    private javax.swing.JMenuItem jM_funcoes;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuItem jMenuAero;
-    private javax.swing.JMenu jMenuCadastros;
     private javax.swing.JMenuItem jMenuIAcrylLook;
     private javax.swing.JMenuItem jMenuIAluminium;
     private javax.swing.JMenuItem jMenuIGraphite;
     private javax.swing.JMenuItem jMenuILuna;
     private javax.swing.JMenuItem jMenuIMcWinLook;
     private javax.swing.JMenuItem jMenuIMint;
+    private javax.swing.JMenuItem jMenuIt_procedimentos;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItemAjuda;
-    private javax.swing.JMenuItem jMenuItemBuscaOrdens;
-    private javax.swing.JMenuItem jMenuItemExames;
-    private javax.swing.JMenuItem jMenuItemFuncoes;
-    private javax.swing.JMenuItem jMenuItemPeriodicidade;
-    private javax.swing.JMenuItem jMenuItemRiscos;
-    private javax.swing.JMenuItem jMenuItemSetores;
-    private javax.swing.JMenuItem jMenuItemTipoRisco;
+    private javax.swing.JMenuItem jMenuItem_condPagto;
+    private javax.swing.JMenuItem jMenuItem_especialidades;
     private javax.swing.JMenu jMenuTema;
-    private javax.swing.JMenu jMenu_pcmso;
+    private javax.swing.JMenu jMenu_consultas;
+    private javax.swing.JMenu jMenu_relatorios;
     private javax.swing.JPopupMenu jPopupBarra;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator11;
     private javax.swing.JPopupMenu.Separator jSeparator12;
     private javax.swing.JPopupMenu.Separator jSeparator13;
-    private javax.swing.JPopupMenu.Separator jSeparator14;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JMenuItem jmiAlteraSenh;
     private javax.swing.JMenuItem jmiCadUsuario;
     private javax.swing.JLabel lbData;
     private javax.swing.JLabel lb_barra;
     private javax.swing.JLabel lb_usuario;
+    private javax.swing.JMenuItem menuClinica;
     private javax.swing.JMenuItem menuEmpresas;
     private javax.swing.JMenu menuUsuario;
+    private javax.swing.JMenu menu_atendimento;
     private javax.swing.JMenu menu_cadastros;
     private javax.swing.JMenuItem menu_item_Paciente;
+    private javax.swing.JMenuItem menu_item_cadConsuta;
+    private javax.swing.JMenuItem menu_item_conAgenda;
+    private javax.swing.JMenuItem menu_item_consulPclient;
+    private javax.swing.JMenuItem menu_item_convenios;
     private javax.swing.JMenuBar menu_principal;
-    private javax.swing.JMenuItem salvaArquivo;
     // End of variables declaration//GEN-END:variables
 
 //public void permicao(){ 
@@ -963,7 +1330,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             String look = null;
             Properties props = new Properties();
-            props.put("logoString", "NEUROCENTER");
+            props.put("logoString", "Mark Consulta");
 
             try {
                 switch (tema) {
@@ -1045,95 +1412,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         return frame;
 
     }
-    
-    private void fecharTela(){
-         int selectedOption = JOptionPane.showConfirmDialog(null,"Deseja sair realmente?", "Sistema informa:", JOptionPane.YES_NO_OPTION);  
-        if(selectedOption == JOptionPane.YES_OPTION){  
-              
-            System.exit(0);                           
-              } 
+
+    private void fecharTela() {
+        int selectedOption = JOptionPane.showConfirmDialog(null, "Deseja Sair Realmente?", "Sistema informa:", JOptionPane.YES_NO_OPTION);
+        if (selectedOption == JOptionPane.YES_OPTION) {
+
+            System.exit(0);
+        }
     }
 
-    
-   
-
-    private void createSaveDialog(File selectedFile) throws IOException, InterruptedException {
-        JFileChooser janela = new JFileChooser();  
-    File arq = new File("neurocenter.backup");
-    if (selectedFile != null) { // Se o arquivo inicial foi especificado, seta no FileChooser  
-        janela.setSelectedFile(arq);  
-    }
-       int resultado = janela.showSaveDialog(this);  
-       File file = janela.getSelectedFile();  
-       if(resultado == JFileChooser.APPROVE_OPTION){  
-           if(file.exists()){  
-               int response = JOptionPane.showConfirmDialog(this, "Substituir o arquivo existente?", "Confirmar substituição", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);  
-                   if (response == JOptionPane.YES_OPTION) {
-                    System.out.println("salvar mesmo assim");
-                    realizaBackup(file.getPath());
-               }
-               
-                    
-               if (response == JOptionPane.CANCEL_OPTION) {  
-                 createSaveDialog(janela.getSelectedFile()); // Se o usuário cancelar, chama o método novamente para abrir um FileChooser já com o arquivo selecionado.  
-              
-               }
-           }else{
-        System.out.println("salvo");
-        System.out.println(file.getAbsolutePath());
-        realizaBackup(file.getPath());
-         
-       } 
-    }
-    
-    }
-    
-    public static void realizaBackup(String diretorio) throws IOException, InterruptedException{        
-           final List<String> comandos = new ArrayList<>();        
-               
-           //comandos.add("C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\pg_dump.exe");   
-          //comandos.add("C:\\Program Files\\PostgresPlus\\8.4SS\\bin\\pg_dump.exe");   
-           comandos.add("C:\\Program Files\\PostgreSQL\\9.1\\bin\\pg_dump.exe");    // esse é meu caminho    
-             
-           comandos.add("-i");        
-           comandos.add("-h");        
-           comandos.add("localhost");     //ou  comandos.add("192.168.0.1");   
-           comandos.add("-p");        
-           comandos.add("5432");        
-           comandos.add("-U");        
-           comandos.add("postgres");        
-           comandos.add("-F");        
-           comandos.add("c");        
-           comandos.add("-b");        
-           comandos.add("-v");        
-           comandos.add("-f");        
-               
-           comandos.add(diretorio);   // eu utilizei meu C:\ e D:\ para os testes e gravei o backup com sucesso.    
-           comandos.add("neurocenter");        
-           ProcessBuilder pb = new ProcessBuilder(comandos);        
-               
-           pb.environment().put("PGPASSWORD", "bg7mkib");      //Somente coloque sua senha           
-               
-           try {        
-               final Process process = pb.start();        
-           
-               final BufferedReader r = new BufferedReader(        
-                   new InputStreamReader(process.getErrorStream()));        
-               String line = r.readLine();        
-               while (line != null) {        
-               System.err.println(line);        
-               line = r.readLine();        
-               }        
-               r.close();        
-           
-               process.waitFor();      
-               process.destroy();   
-               JOptionPane.showMessageDialog(null,"backup realizado com sucesso.");    
-           
-           } catch (IOException | InterruptedException e) {        
-           }           
-                 
-       }        
-          
-    
 }

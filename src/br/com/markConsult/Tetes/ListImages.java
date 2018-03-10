@@ -23,18 +23,18 @@ import javax.imageio.stream.FileImageInputStream;
  */  
 public class ListImages {  
   
-    public static void main(String[] args) {  
-  
-        // lista imagens da raíz do projeto  
-        File root = new File(".");  
-        File[] files = root.listFiles(new FileImageFilter());  
-  
-        // lista os arquivos de imagem  
-        System.out.println("Imagens no diretório '" + root + "'");  
-        for (int i = 0; i < files.length; i++) {  
-            System.out.println(files[i] );  
-        }  
-    }  
+//    public static void main(String[] args) {  
+//  
+//        // lista imagens da raíz do projeto  
+//        File root = new File(".");  
+//        File[] files = root.listFiles(new FileImageFilter());  
+//  
+//        // lista os arquivos de imagem  
+//        System.out.println("Imagens no diretório '" + root + "'");  
+//        for (int i = 0; i < files.length; i++) {  
+//            System.out.println(files[i] );  
+//        }  
+//    }  
   
     /** 
      * Filtro para retornar arquivos que sejam imagem  

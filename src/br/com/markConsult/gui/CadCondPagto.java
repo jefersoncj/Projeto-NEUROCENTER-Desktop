@@ -306,9 +306,7 @@ int inserir_alterar = 0;
             condPagto.setId(id);
             mostrar_dados(condPagto);
 
-        }else
-
-        if (inserir_alterar == 1) {
+        }else if (inserir_alterar == 1) {
 
             Integer id = Integer.parseInt(tf_codigo.getText());
 
@@ -317,11 +315,10 @@ int inserir_alterar = 0;
             ICadCondPagtoDAO dao = new CadCondPagtoDAO();
             CondPagto condPagto = new CondPagto(id, descricao);
             dao.alterar(condPagto);
-
+            inserir_alterar = 0;
         }
-        inserir_alterar = 0;
-
-        estadoBotoes("salvar");
+        
+        estadoBotoes("inicial");
     }//GEN-LAST:event_bt_salvarActionPerformed
 
     private void bt_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_novoActionPerformed

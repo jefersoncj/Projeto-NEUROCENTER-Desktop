@@ -54,13 +54,13 @@ public interface ICadPacienteDAO {
      * @param id
      * @return
      */
-    public Paciente buscClientPCon(String id);
+    public Paciente buscaPacientePorConsulta(String id);
     /**
      *
      * @param id
      * @return
      */
-    public Paciente busaPacientePId(int id);
+    public Paciente buscaPacientePorId(int id);
     
  
     /**

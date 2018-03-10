@@ -5,19 +5,22 @@
 package br.com.markConsult.gui;
 
 import br.com.markConsult.classesMetodos.FixedLengthDocument;
-import br.com.markConsult.classesMetodos.EmpresaTableModel;
-import br.com.markConsult.classesMetodos.UsuarioTableModel;
+import br.com.markConsult.classesMetodos.ClienteTableModel;
 import br.com.markConsult.dao.CadEmpresaDAO;
 import br.com.markConsult.entidades.Empresa;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
@@ -30,10 +33,12 @@ public class BuscaEmpresas extends javax.swing.JDialog {
 
     private boolean okselecionado = false;
     List<Empresa> empresas;
-    private EmpresaTableModel model;
+    private ClienteTableModel model;
 
     /**
      * Creates new form ConsPorCliente
+     * @param parent
+     * @param modal
      */
     public BuscaEmpresas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -42,8 +47,8 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);  
         this.setIconImage(imagemTitulo); 
 
-        model = new EmpresaTableModel();
-        jTRiscos.setModel(model);
+        model = new ClienteTableModel();
+        jTCliente.setModel(model);
 
         CadEmpresaDAO dao = new CadEmpresaDAO();
         List<Empresa> emp = dao.buscaEmpresa("",'e');
@@ -52,14 +57,14 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         tf_dado.setDocument(new FixedLengthDocument(70));
         formaTabela();
         
-        jTRiscos.getSelectionModel().setSelectionInterval(0, 0);
+        jTCliente.getSelectionModel().setSelectionInterval(0, 0);
        
         
-         TableRowSorter<EmpresaTableModel> sorter = new TableRowSorter<>((EmpresaTableModel) jTRiscos.getModel());  
-            jTRiscos.setRowSorter(sorter);
+         TableRowSorter<ClienteTableModel> sorter = new TableRowSorter<>((ClienteTableModel) jTCliente.getModel());  
+            jTCliente.setRowSorter(sorter);
         
         
-        JTableHeader header = jTRiscos.getTableHeader();  
+        JTableHeader header = jTCliente.getTableHeader();  
         header.addMouseListener(new MouseAdapter() {  
   
             @Override  
@@ -77,6 +82,18 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         
          tf_dado.requestFocus();
          
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+
+        Action escapeAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        getRootPane().getActionMap().put("ESCAPE", escapeAction);
+         
     }
 
     /**
@@ -90,7 +107,7 @@ public class BuscaEmpresas extends javax.swing.JDialog {
 
         bt_sair = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTRiscos = new javax.swing.JTable();
+        jTCliente = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         tf_dado = new javax.swing.JTextField();
         cb_campo = new javax.swing.JComboBox();
@@ -100,7 +117,7 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         Ok = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Busca Clientes");
+        setTitle("Busca Empresas");
         setResizable(false);
 
         bt_sair.setText("Fechar");
@@ -110,23 +127,20 @@ public class BuscaEmpresas extends javax.swing.JDialog {
             }
         });
 
-        jTRiscos.setModel(new javax.swing.table.DefaultTableModel(
+        jTCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jTRiscos.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTCliente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTRiscosMouseClicked(evt);
+                jTClienteMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTRiscos);
+        jScrollPane1.setViewportView(jTCliente);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busca Empresas", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
 
@@ -248,13 +262,13 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_tf_dadoKeyReleased
 
-    private void jTRiscosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTRiscosMouseClicked
+    private void jTClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTClienteMouseClicked
               if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2) {
             okselecionado = true;
             dispose();          
         }
-        int s = jTRiscos.getSelectedRow();
-    }//GEN-LAST:event_jTRiscosMouseClicked
+       
+    }//GEN-LAST:event_jTClienteMouseClicked
 
     private void OkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkActionPerformed
       okselecionado = true;
@@ -281,20 +295,20 @@ public class BuscaEmpresas extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(BuscaEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                BuscaEmpresas dialog = new BuscaEmpresas(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            BuscaEmpresas dialog = new BuscaEmpresas(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -306,23 +320,23 @@ public class BuscaEmpresas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTRiscos;
+    private javax.swing.JTable jTCliente;
     private javax.swing.JTextField tf_dado;
     // End of variables declaration//GEN-END:variables
 
  
     public Empresa retornCliSele() {
-        int se = jTRiscos.getSelectedRow();
+        int se = jTCliente.getSelectedRow();
         Empresa emp = null;
         if (se >= 0) {
-            se = jTRiscos.convertRowIndexToModel(se);
+            se = jTCliente.convertRowIndexToModel(se);
             emp = model.getItem(se);
         }
         return emp;
     }
     
     public String retornCliSeleci() {
-        int se = jTRiscos.getSelectedRow();
+        int se = jTCliente.getSelectedRow();
         
         Empresa emp = model.getItem(se);
         return emp.getId().toString();
@@ -359,17 +373,17 @@ public class BuscaEmpresas extends javax.swing.JDialog {
         }
 
         model.listar(empresas);
-        jTRiscos.getSelectionModel().setSelectionInterval(0, 0);
+        jTCliente.getSelectionModel().setSelectionInterval(0, 0);
         formaTabela();
     }
     
     private void formaTabela(){
         
-        jTRiscos.getColumnModel().getColumn(0).setPreferredWidth(150);
-        jTRiscos.getColumnModel().getColumn(1).setPreferredWidth(150);
-        jTRiscos.getColumnModel().getColumn(2).setMinWidth(60);
-        jTRiscos.getColumnModel().getColumn(3).setPreferredWidth(38);
-        jTRiscos.getColumnModel().getColumn(4).setPreferredWidth(50);
+        jTCliente.getColumnModel().getColumn(0).setPreferredWidth(150);
+        jTCliente.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTCliente.getColumnModel().getColumn(2).setMinWidth(60);
+        jTCliente.getColumnModel().getColumn(3).setPreferredWidth(38);
+        jTCliente.getColumnModel().getColumn(4).setPreferredWidth(50);
     
     }    
 }

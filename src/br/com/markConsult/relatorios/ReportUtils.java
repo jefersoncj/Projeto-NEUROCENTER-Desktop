@@ -4,20 +4,18 @@
  */
 package br.com.markConsult.relatorios;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
         
 
@@ -92,60 +90,60 @@ public class ReportUtils {
 //     * @param print JasperPrint do relatório.
 //     */
     private static void viewReportFrame( String titulo, JasperPrint print ) throws JRException, IOException {
-         DateFormat dateFormat = new SimpleDateFormat("HHmmss"); 
-         Date date = new Date(); 
-         String d = dateFormat.format(date);
-
-         String tit = titulo+d;
-        JasperExportManager.exportReportToPdfFile(print, "C:/neurocenter/tempRel/"+tit+".pdf"); 
-       
-        //Runtime.getRuntime().exec("cmd /c start C:/rep/arquivo.pdf"); 
-        File file = new File("C:/neurocenter/tempRel/"+tit+".pdf");
-        java.awt.Desktop.getDesktop().open(file.getAbsoluteFile());
-  
-          
-        
-        File diretorio = new File("C:\\neurocenter/tempRel");   
-          
-        FileFilter ff = new FileFilter() {   
-            @Override
-            public boolean accept(File arquivo){   
-                return arquivo.getName().endsWith(".pdf");  
-            }   
-        };   
-          
-        File[] arquivos = diretorio.listFiles(ff);   
-    
-        if(arquivos != null){   
-            for(File arquivo : arquivos){   
-               arquivo.deleteOnExit();    
-            }   
-        }
+//            DateFormat dateFormat = new SimpleDateFormat("HHmmss"); 
+//         Date date = new Date(); 
+//         String d = dateFormat.format(date);
+//
+//         String tit = titulo+d;
+//        JasperExportManager.exportReportToPdfFile(print, "C:/markconsultas/tempRel/"+tit+".pdf"); 
+//       
+//        //Runtime.getRuntime().exec("cmd /c start C:/rep/arquivo.pdf"); 
+//        File file = new File("C:/markconsultas/tempRel/"+tit+".pdf");
+//        java.awt.Desktop.getDesktop().open(file.getAbsoluteFile());
+//  
+//          
+//        
+//        File diretorio = new File("C:\\markconsultas/tempRel");   
+//          
+//        FileFilter ff = new FileFilter() {   
+//            @Override
+//            public boolean accept(File arquivo){   
+//                return arquivo.getName().endsWith(".pdf");  
+//            }   
+//        };   
+//          
+//        File[] arquivos = diretorio.listFiles(ff);   
+//    
+//        if(arquivos != null){   
+//            for(File arquivo : arquivos){   
+//               arquivo.deleteOnExit();    
+//            }   
+//        }
 //        /*
 //         * Cria um JRViewer para exibir o relatório.
 //         * Um JRViewer é uma JPanel.
 //         */
-//        JRViewer viewer = new JRViewer( print );
-// 
-//        // cria o JFrame
-//        JFrame frameRelatorio = new JFrame( titulo );
-// 
-//        // adiciona o JRViewer no JFrame
-//        frameRelatorio.add( viewer, BorderLayout.CENTER );
-// 
-//        // configura o tamanho padrão do JFrame
-//        frameRelatorio.setSize( 500, 500 );
-// 
-//        // maximiza o JFrame para ocupar a tela toda.
-//        frameRelatorio.setExtendedState( JFrame.MAXIMIZED_BOTH );
-// 
-//        // configura a operação padrão quando o JFrame for fechado.
-//        frameRelatorio.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-//        
-//        ImageIcon icone = new ImageIcon("report.png");
-//        frameRelatorio.setIconImage(icone.getImage());
-//        // exibe o JFrame
-//        frameRelatorio.setVisible(true);
+        JRViewer viewer = new JRViewer( print );
+ 
+        // cria o JFrame
+        JFrame frameRelatorio = new JFrame( titulo );
+ 
+        // adiciona o JRViewer no JFrame
+        frameRelatorio.add( viewer, BorderLayout.CENTER );
+ 
+        // configura o tamanho padrão do JFrame
+        frameRelatorio.setSize( 500, 500 );
+ 
+        // maximiza o JFrame para ocupar a tela toda.
+        frameRelatorio.setExtendedState( JFrame.MAXIMIZED_BOTH );
+ 
+        // configura a operação padrão quando o JFrame for fechado.
+        frameRelatorio.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+        
+        ImageIcon icone = new ImageIcon("report.png");
+        frameRelatorio.setIconImage(icone.getImage());
+        // exibe o JFrame
+        frameRelatorio.setVisible(true);
  
     }
  

@@ -4,6 +4,7 @@
  */
 package br.com.markConsult.dao;
 
+import br.com.markConsult.entidades.Especialidade;
 import br.com.markConsult.entidades.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -54,9 +55,33 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			// pegar a connection
 			connection = getConnection();
 			beginTransaction(connection);
+			
+                        
+                        String sql;
+                        
+                        if (usuario.getEspecialidade().getId() != null) {
 			// criar o sql
-			  String sql = "INSERT INTO usuarios (usuario, senha, "
-                                 + "he_adm, he_atendente, cod_tema) VALUES (?, ?, ?, ?, ?)";
+			 sql = "INSERT INTO usuarios (usuario, senha, crm, id_especialidade, "
+                                 + "he_adm, he_medico, he_atendente, nome_medico, cod_tema) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			// criar o statement
+			pstm = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			
+			// setar os params
+			int index = 0;
+			pstm.setString(++index, usuario.getNome());
+			pstm.setString(++index, criptografia(usuario.getSenha()));
+                        pstm.setString(++index, usuario.getCrm());
+                        pstm.setInt(++index, usuario.getEspecialidade().getId());
+			pstm.setBoolean(++index, usuario.isHeAdm());
+                        pstm.setBoolean(++index, usuario.isHeMedico());
+                        pstm.setBoolean(++index, usuario.isHeAtendente());
+                        pstm.setString(++index, usuario.getNomeMedico());
+                        pstm.setInt(++index, usuario.getCodTema());
+                        
+                        }else{
+                          // criar o sql
+			 sql = "INSERT INTO usuarios (usuario, senha, he_adm, he_medico, he_atendente,cod_tema) VALUES (?, ?, ?, ?, ?, ?)";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -66,10 +91,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			pstm.setString(++index, usuario.getNome());
 			pstm.setString(++index, criptografia(usuario.getSenha()));
 			pstm.setBoolean(++index, usuario.isHeAdm());
+                        pstm.setBoolean(++index, usuario.isHeMedico());
                         pstm.setBoolean(++index, usuario.isHeAtendente());
                         pstm.setInt(++index, usuario.getCodTema());
-                        
-                       
+                        }
 			 pstm.executeUpdate();
                          rs = pstm.getGeneratedKeys();  
                          int id = 0;  
@@ -128,37 +153,87 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			connection = getConnection();
 			beginTransaction(connection);
 			// criar o sql
-			String sql;
+			String sql; 
+                        
+                        if (usuario.getEspecialidade().getId() != null) {
                         
                     
                         if (usuario.isResetSenha()) {
-                        sql = "UPDATE usuarios SET senha = ?,"
-                                + "he_adm = ?,  he_atendente = ?  WHERE id = ? ";
+                        sql = "UPDATE usuarios SET senha = ?, crm = ?, id_especialidade = ?,"
+                                + "he_adm = ?, he_medico = ?, he_atendente = ?, nome_medico = ?  WHERE id = ? ";
                         // criar o statement
 			pstm = connection.prepareStatement(sql);                 
 			// setar os params
 			int index = 0;
                         pstm.setString(++index, criptografia(usuario.getSenha()));
+                        pstm.setString(++index, usuario.getCrm());
+                        pstm.setInt(++index, usuario.getEspecialidade().getId());
 			pstm.setBoolean(++index, usuario.isHeAdm());
+			pstm.setBoolean(++index, usuario.isHeMedico());
 			pstm.setBoolean(++index, usuario.isHeAtendente());
+                        pstm.setString(++index, usuario.getNomeMedico());
                         pstm.setInt(++index, usuario.getId());
                     }else{
-                          sql = "UPDATE usuarios SET he_adm = ?, he_atendente = ?  WHERE id = ?";
+                          sql = "UPDATE usuarios SET crm = ?, id_especialidade = ?,"
+                                + "he_adm = ?, he_medico = ?, he_atendente = ?, nome_medico = ?  WHERE id = ?";
                         // criar o statement
 			pstm = connection.prepareStatement(sql);
 	
 			                 
 			// setar os params
 			int index = 0;
+                        pstm.setString(++index, usuario.getCrm());
+                        pstm.setInt(++index, usuario.getEspecialidade().getId());
 			pstm.setBoolean(++index, usuario.isHeAdm());
+			pstm.setBoolean(++index, usuario.isHeMedico());
 			pstm.setBoolean(++index, usuario.isHeAtendente());
+                        pstm.setString(++index, usuario.getNomeMedico());
+                        pstm.setInt(++index, usuario.getId());
+                        
+                        }	
+                        }else{
+                            if (usuario.isResetSenha()) {
+                        sql = "UPDATE usuarios SET senha = ?, crm = ?, id_especialidade = ?,"
+                                + "he_adm = ?, he_medico = ?, he_atendente = ?, nome_medico = ?  WHERE id = ? ";
+                        // criar o statement
+			pstm = connection.prepareStatement(sql);                 
+			// setar os params
+			int index = 0;
+                        pstm.setString(++index, criptografia(usuario.getSenha()));
+                        pstm.setString(++index, usuario.getCrm());
+                         if(usuario.getEspecialidade().getId() == null){
+                         pstm.setNull(++index, java.sql.Types.INTEGER );
+                        }else{
+                        pstm.setInt(++index, usuario.getEspecialidade().getId());
+                        }
+			pstm.setBoolean(++index, usuario.isHeAdm());
+			pstm.setBoolean(++index, usuario.isHeMedico());
+			pstm.setBoolean(++index, usuario.isHeAtendente());
+                        pstm.setString(++index, usuario.getNomeMedico());
+                        pstm.setInt(++index, usuario.getId());
+                    }else{
+                          sql = "UPDATE usuarios SET crm = ?, id_especialidade = ?,"
+                                + "he_adm = ?, he_medico = ?, he_atendente = ?, nome_medico = ?  WHERE id = ?";
+                        // criar o statement
+			pstm = connection.prepareStatement(sql);
+	
+			                 
+			// setar os params
+			int index = 0;
+                        pstm.setString(++index, usuario.getCrm());
+                        pstm.setInt(++index, 0);
+			pstm.setBoolean(++index, usuario.isHeAdm());
+			pstm.setBoolean(++index, usuario.isHeMedico());
+			pstm.setBoolean(++index, usuario.isHeAtendente());
+                        pstm.setString(++index, usuario.getNomeMedico());
                         pstm.setInt(++index, usuario.getId());
                         
                         }	
                         
+                        }
 
                          // executar
-			pstm.execute();
+			pstm.executeUpdate();
 
 			commitTransaction(connection);
 			idAlterado = true;
@@ -338,7 +413,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuarios.id = ?";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id = ?";
                         
 
 			// criar o statement
@@ -375,7 +453,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE senha = ?";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE senha = ?";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -411,7 +492,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql ="SELECT * FROM usuarios WHERE usuario = ?"; 
+			String sql ="SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuario = ?"; 
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -448,7 +532,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuario = ?  AND senha = ? ";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuario = ?  AND senha = ? ";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -488,21 +575,33 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			String sql="";
 			switch (tipo) {
 			case 'e':
-				sql = "SELECT * FROM usuarios WHERE  usuario like ('%"+nome+"%') ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE  usuario like ('%"+nome+"%') ORDER BY id"; 
                                
 				break;
 			case 'i':
-				sql = "SELECT * FROM usuarios WHERE senha = '"+senha+"' ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE senha = '"+senha+"' ORDER BY id"; 
                                
 				break;
                             
                         case 't':
-				sql = "SELECT * FROM usuarios WHERE usuarios.id = '"+nome+"' ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id = '"+nome+"' ORDER BY id"; 
                                
 				break;
                             
                             case 'a':
-				sql = "SELECT * FROM usuarios WHERE crm like ('%"+nome+"%') ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE crm like ('%"+nome+"%') ORDER BY id"; 
                                
 				break;
 			
@@ -552,21 +651,33 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			String sql="";
 			switch (tipo) {
 			case 'e':
-				sql = "SELECT * FROM usuarios WHERE  usuario like ('%"+nome+"%') AND he_medico = true ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE  usuario like ('%"+nome+"%') AND he_medico = true ORDER BY id"; 
                                
 				break;
 			case 'i':
-				sql = "SELECT * FROM usuarios WHERE senha = '"+senha+"' AND he_medico = true ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE senha = '"+senha+"' AND he_medico = true ORDER BY id"; 
                                
 				break;
                             
                         case 't':
-				sql = "SELECT * FROM usuarios WHERE usuarios.id = '"+nome+"' AND he_medico = true ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id = '"+nome+"' AND he_medico = true ORDER BY id"; 
                                
 				break;
                             
                             case 'a':
-				sql = "SELECT * FROM usuarios WHERE crm like ('%"+nome+"%') AND he_medico = true ORDER BY id"; 
+				sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE crm like ('%"+nome+"%') AND he_medico = true ORDER BY id"; 
                                
 				break;
 			
@@ -612,7 +723,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			connection = getConnection();
 			beginTransaction(connection);
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuarios.id = (SELECT MAX(id) AS maxID FROM usuarios)";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id = (SELECT MAX(id) AS maxID FROM usuarios)";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -648,7 +762,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
                      
                         
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuarios.id = (SELECT MIN(id) AS minID FROM usuarios)";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id = (SELECT MIN(id) AS minID FROM usuarios)";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -684,7 +801,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuarios.id > '"+id+"' ORDER BY id limit 1";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id > '"+id+"' ORDER BY id limit 1";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -719,7 +839,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
 			beginTransaction(connection);
 
 			// CRIAR SQL
-			String sql = "SELECT * FROM usuarios WHERE usuarios.id < '"+id+"' ORDER BY id desc limit 1";
+			String sql = "SELECT usuarios.*, especialidades.ds_especialidade "
+                            + "FROM usuarios "
+                            + "LEFT JOIN especialidades ON especialidades.id = usuarios.id_especialidade "
+                            + "WHERE usuarios.id < '"+id+"' ORDER BY id desc limit 1";
 
 			// criar o statement
 			pstm = connection.prepareStatement(sql);
@@ -747,10 +870,10 @@ public class CadUsuarioDAO extends AbstractConecxaoDAO implements ICadUsuarioDAO
          }
                  
                    public Usuario retornObUsuario(ResultSet rs) throws SQLException{
-                  
+                   Especialidade esp = new Especialidade(rs.getInt("id_especialidade"), rs.getString("ds_especialidade"));
                     Usuario usu = new Usuario(rs.getInt("id"), rs.getString("usuario"), 
-                            rs.getString("senha"), 
-                            rs.getBoolean("he_adm"),
+                            rs.getString("senha"),rs.getString("crm"),rs.getString("nome_medico"),esp, 
+                            rs.getBoolean("he_adm"),rs.getBoolean("he_medico"),
                             rs.getBoolean("he_atendente"), false, rs.getBoolean("esconde_barra"),rs.getInt("cod_tema"));
                      return usu;               
                 }

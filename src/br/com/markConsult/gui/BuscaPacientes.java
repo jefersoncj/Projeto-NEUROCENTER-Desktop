@@ -10,6 +10,8 @@ import br.com.markConsult.classesMetodos.PacienteTableModel;
 import br.com.markConsult.dao.CadPacienteDAO;
 import br.com.markConsult.dao.ICadPacienteDAO;
 import br.com.markConsult.entidades.Paciente;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
@@ -17,8 +19,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
@@ -71,6 +77,18 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
         }); 
         
          tf_dado.requestFocus();
+         
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+
+        Action escapeAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        getRootPane().getActionMap().put("ESCAPE", escapeAction);
     }
 
     /**
@@ -82,6 +100,8 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTPacientes = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -99,6 +119,20 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Busca paciente");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/help.png"))); // NOI18N
+
+        jButton1.setText("Histórioco do paciente");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Marcar Consulta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,20 +246,24 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bt_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bt_excluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
                         .addComponent(bt_sair)))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bt_editar, bt_excluir, bt_novo});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bt_editar, bt_excluir, bt_novo, jButton1, jButton2});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,17 +275,56 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(bt_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(bt_novo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(bt_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(bt_excluir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(bt_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bt_editar, bt_excluir, bt_novo});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bt_editar, bt_excluir, bt_novo, jButton1, jButton2});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ConsPorPaciente tela_busca = new ConsPorPaciente(null, true);
+        int a = jTPacientes.getSelectedRow();
+
+        if (a >= 0) {
+            Paciente cons = model.getItem(a);
+            tela_busca.retornaiItemSelecionado(cons.getId(), cons.getNome());
+            tela_busca.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null,"Selecione um paciente!");
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            int conSele = jTPacientes.getSelectedRow();
+            Paciente c;
+            if (conSele >= 0) {
+                String data = (new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(System.currentTimeMillis())));
+                c = model.getItem(conSele);
+                CadConsultaModal telCadCons = new CadConsultaModal(null, true);
+                telCadCons.estadoBotoes("novo");
+                telCadCons.novoCad(converte(data));
+                telCadCons.setPaciente(c);
+                telCadCons.buscaPaciente();
+                telCadCons.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null,"Selecione um Paciente!");
+            }
+
+        } catch (ParseException ex) {
+            System.out.println("erro ao marcar nova consulta");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTPacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTPacientesMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2) {
@@ -295,6 +372,8 @@ public class BuscaPacientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton bt_sair;
     private javax.swing.JComboBox cb_campo;
     private java.awt.Checkbox cbx_complete;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -375,13 +454,25 @@ public Date converte(String dataNasc) throws ParseException {
     }    
     
     private void editaPaciente(){
- 
+        int se = jTPacientes.getSelectedRow();
+        if (se >= 0) {
+             Paciente pa = model.getItem(se);
+             CadPacienteModal p = new CadPacienteModal(null, true);
+             p.setaPaciente(pa);
+             p.setVisible(true);
+             pesquisa();
+        }else{
+                JOptionPane.showMessageDialog(null,"Selecione um Paciente!");
+            }
 
          
     }
     
     private void novoPaciente(){
-
+             CadPacienteModal p = new CadPacienteModal(null, true);
+             p.novoPaciente();
+             p.setVisible(true);
+             pesquisa();
           
     }
      private void excluiPaciente(){

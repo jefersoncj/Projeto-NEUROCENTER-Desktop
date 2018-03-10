@@ -10,11 +10,17 @@ import br.com.markConsult.dao.CadFuncaoDAO;
 import br.com.markConsult.entidades.Funcao;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
@@ -26,8 +32,8 @@ import javax.swing.table.TableRowSorter;
 public class BuscaFuncao extends javax.swing.JDialog {
 
     private boolean okselecionado = false;
-    List<Funcao> espcialidades;
-    private final FuncaoTableModel model;
+    List<Funcao> tipoConsultas;
+    private FuncaoTableModel model;
 
     /**
      * Creates new form ConsPorClientes
@@ -44,9 +50,9 @@ public class BuscaFuncao extends javax.swing.JDialog {
         jTFuncaos.setModel(model);
 
         CadFuncaoDAO dao = new CadFuncaoDAO();
-        List<Funcao> med = dao.buscaFuncaoes("", 'e');
-        model.listar(med);
-        
+        List<Funcao> usu = dao.BuscaFuncaos("", 'e');
+        model.listar(usu);
+
         tf_dado.setDocument(new FixedLengthDocument(70));
         jTFuncaos.getColumnModel().getColumn(0).setMinWidth(15);
         jTFuncaos.getColumnModel().getColumn(1).setPreferredWidth(200);
@@ -76,6 +82,18 @@ public class BuscaFuncao extends javax.swing.JDialog {
         }); 
         
          tf_dado.requestFocus();
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+
+        Action escapeAction = new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        getRootPane().getActionMap().put("ESCAPE", escapeAction);
+   
     }
 
     /**
@@ -137,7 +155,7 @@ public class BuscaFuncao extends javax.swing.JDialog {
             }
         });
 
-        cb_campo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Descrição", "Código" }));
+        cb_campo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nome", "Código" }));
 
         bt_busca2.setText("Buscar");
         bt_busca2.addActionListener(new java.awt.event.ActionListener() {
@@ -215,9 +233,9 @@ public class BuscaFuncao extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt_sair)
-                    .addComponent(Ok))
-                .addGap(20, 20, 20))
+                    .addComponent(Ok)
+                    .addComponent(bt_sair))
+                .addContainerGap())
         );
 
         pack();
@@ -278,22 +296,17 @@ public class BuscaFuncao extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                BuscaFuncao dialog = new BuscaFuncao(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            BuscaFuncao dialog = new BuscaFuncao(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -310,18 +323,14 @@ public class BuscaFuncao extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
  
-
     public Funcao retornEspSele() {
         int sele = jTFuncaos.getSelectedRow();
-
-        Funcao m = null;
-
+        Funcao p = null;
         if (sele >= 0) {
             sele = jTFuncaos.convertRowIndexToModel(sele);
-            m = model.getItem(sele);
+            p = model.getItem(sele);
         }
-
-        return m;
+        return p;
     }
 
     public boolean okselecionado() {
@@ -337,16 +346,17 @@ public class BuscaFuncao extends javax.swing.JDialog {
    
         switch (cb_campo.getSelectedIndex()) {
             case 0:
-                espcialidades = dao.buscaFuncaoes(valor, 'e');
+                tipoConsultas = dao.BuscaFuncaos(valor, 'e');
                 break;
             case 1:
-                espcialidades = dao.buscaFuncaoes(valor, 'i');
+                tipoConsultas = dao.BuscaFuncaos(valor, 'i');
                 break;
+
 
         }
 
-        model.listar(espcialidades);
+        model.listar(tipoConsultas);
         
-
+        
     }
 }

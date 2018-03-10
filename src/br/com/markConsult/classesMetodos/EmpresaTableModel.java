@@ -6,7 +6,7 @@ package br.com.markConsult.classesMetodos;
  */
 
 
-import br.com.markConsult.entidades.Empresa;
+import br.com.markConsult.entidades.Clinica;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -27,14 +27,14 @@ public class EmpresaTableModel extends AbstractTableModel{
     private final int COL_FONE= 4; 
     
     //lista dos produtos que serão exibidos
-    private List<Empresa> empresas;
+    private List<Clinica> empresas;
             
     
      public EmpresaTableModel() {
         empresas = new ArrayList();
     }
      
-      public EmpresaTableModel(List<Empresa> lista) {
+      public EmpresaTableModel(List<Clinica> lista) {
         this();
         empresas.addAll(lista);
     }
@@ -103,7 +103,7 @@ public class EmpresaTableModel extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         //pega o produto da linha
-        Empresa c = empresas.get(rowIndex);
+        Clinica c = empresas.get(rowIndex);
  
         //verifica qual valor deve ser retornado
         if (columnIndex == COL_FATASIA) {
@@ -142,14 +142,14 @@ public class EmpresaTableModel extends AbstractTableModel{
     }
       
      
-     public void listar(List<Empresa> c) {
+     public void listar(List<Clinica> c) {
         empresas.clear();
         empresas = c;
  
         fireTableDataChanged();
     }
  
-    public Empresa getItem(int pos) {
+    public Clinica getItem(int pos) {
         if (pos < 0 || pos >= empresas.size()) {
             return null;
         }

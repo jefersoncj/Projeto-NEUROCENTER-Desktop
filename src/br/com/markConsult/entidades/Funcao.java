@@ -4,25 +4,25 @@
  */
 package br.com.markConsult.entidades;
 
+import java.util.Objects;
+
 /**
  *
  * @author jeferson
  */
 public class Funcao {
-    
     private Integer id;
-    private String descFuncao;
+    private String nome;
     
     public Funcao(){
         
     }
 
-    public Funcao(Integer id, String descFuncao) {
+    public Funcao(Integer id, String nome) {
         this.id = id;
-        this.descFuncao = descFuncao;
+        this.nome = nome;
     }
 
-    
     public Integer getId() {
         return id;
     }
@@ -31,19 +31,44 @@ public class Funcao {
         this.id = id;
     }
 
-    public String getDescFuncao() {
-        return descFuncao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescFuncao(String descFuncao) {
-        this.descFuncao = descFuncao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
     public String toString() {
-        return descFuncao;
+        return nome;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
-   
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Funcao other = (Funcao) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
     
+  
 }

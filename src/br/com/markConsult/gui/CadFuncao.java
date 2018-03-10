@@ -9,38 +9,25 @@ import br.com.markConsult.classesMetodos.IntegerDocument;
 import br.com.markConsult.dao.CadFuncaoDAO;
 import br.com.markConsult.entidades.Funcao;
 import java.awt.event.KeyEvent;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.InputMismatchException;
 import javax.swing.JOptionPane;
-import javax.swing.JRootPane;
-import javax.swing.text.MaskFormatter;
 
 /**
  *
  * @author jeferson
  */
 public class CadFuncao extends javax.swing.JInternalFrame {
-
-    int inserir_alterar = 0;
-    String endImage;
-
+int inserir_alterar = 0;
     /**
-     * Creates new form CadCliente
+     * Creates new form CadFuncao
      */
     public CadFuncao() {
         initComponents();
+        
         estadoBotoes("inicial");
-
         tf_codigo.setDocument(new IntegerDocument(10));
-        tf_fantasia.setDocument(new FixedLengthDocument(120));
-      
-
-        atualizaTela();
-       
+        tf_descri.setDocument(new  FixedLengthDocument(65));
         bt_buscar.requestFocus();
+        atualizaTela();
     }
 
     /**
@@ -52,13 +39,8 @@ public class CadFuncao extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel4 = new javax.swing.JPanel();
-        jLabel18 = new javax.swing.JLabel();
-        tf_codigo = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        tf_fantasia = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        bt_sair = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        bt_sair2 = new javax.swing.JButton();
         bt_editar = new javax.swing.JButton();
         bt_salvar = new javax.swing.JButton();
         bt_novo = new javax.swing.JButton();
@@ -67,75 +49,27 @@ public class CadFuncao extends javax.swing.JInternalFrame {
         bt_buscar = new javax.swing.JButton();
         bt_ultimo = new javax.swing.JButton();
         bt_avançar = new javax.swing.JButton();
-        bt_primeiro = new javax.swing.JButton();
         bt_voltar = new javax.swing.JButton();
+        bt_primeiro = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        tf_codigo = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        tf_descri = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Função");
-        setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/help.png"))); // NOI18N
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastro de Função", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel3.setToolTipText("");
 
-        jLabel18.setText("Código:");
-
-        tf_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                tf_codigoFocusLost(evt);
-            }
-        });
-        tf_codigo.addActionListener(new java.awt.event.ActionListener() {
+        bt_sair2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/Log-Out-icon.png"))); // NOI18N
+        bt_sair2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sair", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
+        bt_sair2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_codigoActionPerformed(evt);
-            }
-        });
-        tf_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tf_codigoKeyPressed(evt);
-            }
-        });
-
-        jLabel7.setText("Descrição:");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(tf_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(tf_fantasia))
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
-                    .addComponent(tf_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tf_fantasia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel1.setToolTipText("");
-
-        bt_sair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/Log-Out-icon.png"))); // NOI18N
-        bt_sair.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sair", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
-        bt_sair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_sairActionPerformed(evt);
+                bt_sair2ActionPerformed(evt);
             }
         });
 
@@ -185,6 +119,7 @@ public class CadFuncao extends javax.swing.JInternalFrame {
         });
 
         bt_buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/Search-icon.png"))); // NOI18N
+        bt_buscar.setToolTipText("");
         bt_buscar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
         bt_buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,14 +148,6 @@ public class CadFuncao extends javax.swing.JInternalFrame {
             }
         });
 
-        bt_primeiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/hide-left-icon.png"))); // NOI18N
-        bt_primeiro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Primeiro", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
-        bt_primeiro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_primeiroActionPerformed(evt);
-            }
-        });
-
         bt_voltar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/navigate-left-icon.png"))); // NOI18N
         bt_voltar.setToolTipText("");
         bt_voltar.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Voltar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
@@ -230,14 +157,21 @@ public class CadFuncao extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+        bt_primeiro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/markConsult/imagens/hide-left-icon.png"))); // NOI18N
+        bt_primeiro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Primeiro", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Arial", 0, 11))); // NOI18N
+        bt_primeiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_primeiroActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addComponent(bt_primeiro, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(bt_voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(bt_avançar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,14 +190,14 @@ public class CadFuncao extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addComponent(bt_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(bt_sair, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bt_sair2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bt_buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(bt_excluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(bt_novo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(bt_sair, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bt_sair2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(bt_editar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(bt_salvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(bt_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -273,150 +207,179 @@ public class CadFuncao extends javax.swing.JInternalFrame {
             .addComponent(bt_primeiro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Procedimento", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+
+        jLabel4.setText("Código:");
+
+        tf_codigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tf_codigoFocusLost(evt);
+            }
+        });
+        tf_codigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_codigoActionPerformed(evt);
+            }
+        });
+        tf_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_codigoKeyPressed(evt);
+            }
+        });
+
+        jLabel5.setText("Descrição:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(tf_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(tf_descri))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(tf_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_descri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tf_codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_codigoActionPerformed
-
-    }//GEN-LAST:event_tf_codigoActionPerformed
-
-    private void tf_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_codigoFocusLost
-        if (tf_codigo.isEditable()) {
-            String id = tf_codigo.getText();
-            if (id.equals("")) {
-                atualizaTela();
-            } else {
-                buscaPorId(id);
-            }
-        }
-    }//GEN-LAST:event_tf_codigoFocusLost
-
-    private void tf_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_codigoKeyPressed
-        if (tf_codigo.isEditable()) {
-            if (evt.getKeyCode() == KeyEvent.VK_F2) {
-                telBuscEmp();
-
-            }
-        }
-
-    }//GEN-LAST:event_tf_codigoKeyPressed
-
-    private void bt_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_sairActionPerformed
+    private void bt_sair2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_sair2ActionPerformed
         dispose();
-    }//GEN-LAST:event_bt_sairActionPerformed
+    }//GEN-LAST:event_bt_sair2ActionPerformed
 
     private void bt_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editarActionPerformed
-
         inserir_alterar = 1;
         estadoBotoes("novo");
     }//GEN-LAST:event_bt_editarActionPerformed
 
     private void bt_salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_salvarActionPerformed
-
-        String fantasia = tf_fantasia.getText();
-
-      
-
-        if (inserir_alterar == 0) {
-
+        String descricao = tf_descri.getText();
+        if (inserir_alterar == 0) {  
             CadFuncaoDAO dao = new CadFuncaoDAO();
-            Funcao funcao = new Funcao(null, fantasia);
 
-            int id = dao.inseFuncao(funcao);
-            funcao.setId(id);
-            tf_codigo.setText("" + id);
+            Funcao tipoConsulta = new Funcao(null, descricao);
 
-        }
+            int id = dao.inserir(tipoConsulta);
+
+            tipoConsulta.setId(id);
+            mostrar_dados(tipoConsulta);
+
+        }else
 
         if (inserir_alterar == 1) {
-            int codigo = Integer.parseInt(tf_codigo.getText());
+
+            Integer id = Integer.parseInt(tf_codigo.getText());
+
             CadFuncaoDAO dao = new CadFuncaoDAO();
-            Funcao funcao = new Funcao(codigo, fantasia);
-            dao.altFuncao(funcao);
+            Funcao tipoConsulta = new Funcao(id, descricao);
+            dao.alterar(tipoConsulta);
+            inserir_alterar = 0;
+
         }
-        inserir_alterar = 0;
-
+        
         estadoBotoes("salvar");
-
-
     }//GEN-LAST:event_bt_salvarActionPerformed
 
     private void bt_novoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_novoActionPerformed
-       
-
         tf_codigo.setText("");
-        tf_fantasia.setText("");
-        tf_fantasia.requestFocus();
+        tf_descri.setText("");
         estadoBotoes("novo");
+        tf_descri.requestFocus();
     }//GEN-LAST:event_bt_novoActionPerformed
 
     private void bt_excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_excluirActionPerformed
-        int opcao_escolhida = JOptionPane.showConfirmDialog(null, "Excluir " + tf_fantasia.getText() + "?", "Exclusão ", JOptionPane.YES_NO_OPTION);
+        int opcao_escolhida = JOptionPane.showConfirmDialog(null, "Excluir " + tf_descri.getText() + "?", "Exclusão ", JOptionPane.YES_NO_OPTION);
         if (opcao_escolhida == JOptionPane.YES_OPTION) {
             int id = Integer.parseInt(tf_codigo.getText());
             CadFuncaoDAO dao = new CadFuncaoDAO();
-            boolean excludo = dao.rmFuncao(id);
+            boolean excludo = dao.remover(id);
             if (excludo) {
                 atualizaTela();
                 estadoBotoes("inicial");
-            } else {
-                JOptionPane.showMessageDialog(null, "Funcao não pode ser excluído porque está sendo utilizado em outra tabela!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Convênio não pode ser excluído porque está sendo utilizado em outra tabela");
             }
-
         }
+
     }//GEN-LAST:event_bt_excluirActionPerformed
 
     private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
         String nome = "Deseja realmente cancelar?";
         int opcao_escolhida = JOptionPane.showConfirmDialog(null, nome, "Cancelar ", JOptionPane.YES_NO_OPTION);
         if (opcao_escolhida == JOptionPane.YES_OPTION) {
-            inserir_alterar = 0;
             estadoBotoes("cancelar");
-
+            inserir_alterar = 0;
         }
     }//GEN-LAST:event_bt_cancelarActionPerformed
 
     private void bt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscarActionPerformed
-        telBuscEmp();
+        telBuscaFuncao();
     }//GEN-LAST:event_bt_buscarActionPerformed
 
     private void bt_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bt_buscarKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_F2) {
-            telBuscEmp();
+            telBuscaFuncao();
         }
     }//GEN-LAST:event_bt_buscarKeyPressed
 
     private void bt_ultimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_ultimoActionPerformed
-        atualizaTela();
+        CadFuncaoDAO dao = new CadFuncaoDAO();
+        Funcao c = dao.mostrarUltimo();
+        mostrar_dados(c);
     }//GEN-LAST:event_bt_ultimoActionPerformed
 
     private void bt_avançarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_avançarActionPerformed
-
         CadFuncaoDAO dao = new CadFuncaoDAO();
         Funcao c = dao.mostrarProximo(Integer.parseInt(tf_codigo.getText()));
         mostrar_dados(c);
     }//GEN-LAST:event_bt_avançarActionPerformed
+
+    private void bt_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_voltarActionPerformed
+        CadFuncaoDAO dao = new CadFuncaoDAO();
+        Funcao c = dao.mostrarAnterior(Integer.parseInt(tf_codigo.getText()));
+        mostrar_dados(c);
+    }//GEN-LAST:event_bt_voltarActionPerformed
 
     private void bt_primeiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_primeiroActionPerformed
         CadFuncaoDAO dao = new CadFuncaoDAO();
@@ -424,13 +387,28 @@ public class CadFuncao extends javax.swing.JInternalFrame {
         mostrar_dados(c);
     }//GEN-LAST:event_bt_primeiroActionPerformed
 
-    private void bt_voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_voltarActionPerformed
+    private void tf_codigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_codigoActionPerformed
+        tf_descri.requestFocus();
+    }//GEN-LAST:event_tf_codigoActionPerformed
 
-        CadFuncaoDAO dao = new CadFuncaoDAO();
-        Funcao c = dao.mostrarAnterior(Integer.parseInt(tf_codigo.getText()));
-        mostrar_dados(c);
+    private void tf_codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tf_codigoFocusLost
+        if (tf_codigo.isEditable()) {
+        String id = tf_codigo.getText();
+        if (id.equals("")) {
+            atualizaTela();
+        }else{
+            buscaPorId(id);
+        }}
+    }//GEN-LAST:event_tf_codigoFocusLost
 
-    }//GEN-LAST:event_bt_voltarActionPerformed
+    private void tf_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_codigoKeyPressed
+         if (tf_codigo.isEditable()) {
+        if (evt.getKeyCode() == KeyEvent.VK_F2) {
+            telBuscaFuncao();
+
+        }
+         }
+    }//GEN-LAST:event_tf_codigoKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_avançar;
@@ -440,106 +418,19 @@ public class CadFuncao extends javax.swing.JInternalFrame {
     private javax.swing.JButton bt_excluir;
     private javax.swing.JButton bt_novo;
     private javax.swing.JButton bt_primeiro;
-    private javax.swing.JButton bt_sair;
+    private javax.swing.JButton bt_sair2;
     private javax.swing.JButton bt_salvar;
     private javax.swing.JButton bt_ultimo;
     private javax.swing.JButton bt_voltar;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField tf_codigo;
-    private javax.swing.JTextField tf_fantasia;
+    private javax.swing.JTextField tf_descri;
     // End of variables declaration//GEN-END:variables
- public static String formatarString(String texto, String mascara) throws ParseException {
-        MaskFormatter mf = new MaskFormatter(mascara);
-        mf.setValueContainsLiteralCharacters(false);
-        return mf.valueToString(texto);
-
-    }
-
-    public static boolean isCNPJ(String CNPJ) {
-// considera-se erro CNPJ's formados por uma sequencia de numeros iguais
-        if (CNPJ.equals("00000000000000") || CNPJ.equals("11111111111111")
-                || CNPJ.equals("22222222222222") || CNPJ.equals("33333333333333")
-                || CNPJ.equals("44444444444444") || CNPJ.equals("55555555555555")
-                || CNPJ.equals("66666666666666") || CNPJ.equals("77777777777777")
-                || CNPJ.equals("88888888888888") || CNPJ.equals("99999999999999")
-                || (CNPJ.length() != 14)) {
-            return (false);
-        }
-
-        char dig13, dig14;
-        int sm, i, r, num, peso;
-
-// "try" - protege o código para eventuais erros de conversao de tipo (int)
-        try {
-// Calculo do 1o. Digito Verificador
-            sm = 0;
-            peso = 2;
-            for (i = 11; i >= 0; i--) {
-// converte o i-ésimo caractere do CNPJ em um número:
-// por exemplo, transforma o caractere '0' no inteiro 0
-// (48 eh a posição de '0' na tabela ASCII)
-                num = (int) (CNPJ.charAt(i) - 48);
-                sm = sm + (num * peso);
-                peso = peso + 1;
-                if (peso == 10) {
-                    peso = 2;
-                }
-            }
-
-            r = sm % 11;
-            if ((r == 0) || (r == 1)) {
-                dig13 = '0';
-            } else {
-                dig13 = (char) ((11 - r) + 48);
-            }
-
-// Calculo do 2o. Digito Verificador
-            sm = 0;
-            peso = 2;
-            for (i = 12; i >= 0; i--) {
-                num = (int) (CNPJ.charAt(i) - 48);
-                sm = sm + (num * peso);
-                peso = peso + 1;
-                if (peso == 10) {
-                    peso = 2;
-                }
-            }
-
-            r = sm % 11;
-            if ((r == 0) || (r == 1)) {
-                dig14 = '0';
-            } else {
-                dig14 = (char) ((11 - r) + 48);
-            }
-
-// Verifica se os dígitos calculados conferem com os dígitos informados.
-            if ((dig13 == CNPJ.charAt(12)) && (dig14 == CNPJ.charAt(13))) {
-                return (true);
-            } else {
-                return (false);
-            }
-        } catch (InputMismatchException erro) {
-            return (false);
-        }
-    }
-
-    public static String imprimeCNPJ(String CNPJ) {
-// máscara do CNPJ: 99.999.999.9999-99
-        return (CNPJ.substring(0, 2) + "." + CNPJ.substring(2, 5) + "."
-                + CNPJ.substring(5, 8) + "/" + CNPJ.substring(8, 12) + "-"
-                + CNPJ.substring(12, 14));
-    }
-
-    public String removerMascara(String str) {
-        return str.replaceAll("\\D", "");
-
-    }
-
-    private void estadoBotoes(String botao) {
-        if ("inicial".equals(botao)) {
+private void estadoBotoes(String botao) {
+if ("inicial".equals(botao)) {
             bt_novo.setEnabled(true);
             bt_cancelar.setEnabled(false);
             bt_editar.setEnabled(true);
@@ -550,11 +441,11 @@ public class CadFuncao extends javax.swing.JInternalFrame {
             bt_voltar.setEnabled(true);
             bt_avançar.setEnabled(true);
             bt_ultimo.setEnabled(true);
-           
 
             tf_codigo.setEditable(true);
-            tf_fantasia.setEditable(false);
-          
+            tf_descri.setEditable(false);
+            
+           
 
         }
 
@@ -570,16 +461,16 @@ public class CadFuncao extends javax.swing.JInternalFrame {
             bt_voltar.setEnabled(false);
             bt_avançar.setEnabled(false);
             bt_ultimo.setEnabled(false);
-        
 
             tf_codigo.setEditable(false);
-            tf_fantasia.setEditable(true);
-           
+            tf_descri.setEditable(true);
+         
 
         }
 
+
         if ("cancelar".equals(botao)) {
-            atualizaTela();
+           atualizaTela();
             estadoBotoes("inicial");
         }
         if ("salvar".equals(botao)) {
@@ -592,54 +483,47 @@ public class CadFuncao extends javax.swing.JInternalFrame {
 
         }
 
+ }
+
+
+ public void mostrar_dados(Funcao tipoConsulta) {
+if(tipoConsulta!=null){
+        tf_codigo.setText("" + tipoConsulta.getId());
+        tf_descri.setText(tipoConsulta.getNome());
+       
+}
     }
+public final void atualizaTela() {
+       CadFuncaoDAO dao = new CadFuncaoDAO();
+       Funcao c = dao.mostrarUltimo();
 
-    public Date converte(String dataNasc) throws ParseException {
-        DateFormat forma = new SimpleDateFormat("dd/MM/yyyy");
-        java.sql.Date dat = new java.sql.Date(forma.parse(dataNasc).getTime());
+           mostrar_dados(c);
+        
+}
 
-        return dat;
-    }
-
-    private void atualizaTela() {
-        CadFuncaoDAO dao = new CadFuncaoDAO();
-        Funcao c = dao.mostrarUltimo();
-        mostrar_dados(c);
-    }
-
-    public void mostrar_dados(Funcao emp) {
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-        if (emp != null) {
-
-         
-                tf_codigo.setText("" + emp.getId());
-                tf_fantasia.setText(emp.getDescFuncao());
-                
-               
-
+public void buscaPorId(String id) {
+    if (!id.equals("")) {
+        
+    
+      CadFuncaoDAO dao = new CadFuncaoDAO();
+        Funcao tipoConsulta = dao.procuraPorID(Integer.parseInt(id));
+        if(tipoConsulta==null){
+            JOptionPane.showMessageDialog(null, "Cadastro "+id+" não existe!");
+            tf_codigo.requestFocus();
         }
+        mostrar_dados(tipoConsulta);
     }
+}
 
-    public void buscaPorId(String id) {
-        CadFuncaoDAO dao = new CadFuncaoDAO();
-        Funcao funcao = dao.buscEmpPid(Integer.parseInt(id));
-        if (funcao == null) {
-            JOptionPane.showMessageDialog(null, "Funcao não cadastrada!");
-             tf_codigo.requestFocus();
+
+public void telBuscaFuncao(){
+         BuscaFuncao tc = new BuscaFuncao(null, true);
+        tc.setVisible(true);
+
+        if (tc.okselecionado()) {
+            Funcao c = tc.retornEspSele();
+            mostrar_dados(c);
         }
-        mostrar_dados(funcao);
-    }
-
-    public void telBuscEmp() {
-        BuscaFuncao pcp = new BuscaFuncao(null, true);
-        pcp.getRootPane().setWindowDecorationStyle(JRootPane.COLOR_CHOOSER_DIALOG);
-        pcp.setVisible(true);
-
-        if (pcp.okselecionado()) {
-
-            Funcao emp = pcp.retornEspSele();
-            mostrar_dados(emp);
-        }
-
-    }
+        tc.dispose();
+}
 }

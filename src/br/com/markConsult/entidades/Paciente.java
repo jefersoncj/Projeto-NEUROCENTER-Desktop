@@ -12,7 +12,8 @@ import java.sql.Date;
  */
 public class Paciente {
     private Integer id;
-    private Empresa empresa;
+    private String numConvenio;
+    private Convenio convenio;
     private String nome;
     private String email;
     private String numero;
@@ -20,6 +21,7 @@ public class Paciente {
     private String cpf;
     private String rg;
     private Date dataNasc;
+    private String tipoSangue;
     private String foneFixo;
     private String celular1;
     private String celular2;
@@ -28,30 +30,44 @@ public class Paciente {
     private Cep   cep;
     private boolean desabilitado;
     private Date dataCadastro;
+    private Date dataUltConsu;
+    private Integer status;
     private String nomeMae;
     private String nomePai;
-    private Setor setor;
+    private Empresa empresa;
     private Funcao funcao;
-    private Date dataAdmissao;
-    
-    
-    
-    
-    
+            
     public Paciente(){
         
     }
 
-   
-
-    public Paciente(Integer id, String nome) {
+    public Paciente(Integer id, String numConvenio, String nome, Empresa empresa, Funcao funcao ) {
         this.id = id;
+        this.numConvenio = numConvenio;
         this.nome = nome;
+        this.empresa = empresa;
+        this.funcao = funcao;
     }
 
-    public Paciente(Integer id, Empresa empresa, String nome, String email, String numero, String complemento, String cpf, String rg, Date dataNasc, String foneFixo, String celular1, String celular2, String celular3, String obs, Cep cep, boolean desabilitado, Date dataCadastro, String nomeMae, String nomePai, Setor setor, Funcao funcao, Date dataAdmissao) {
+    public Paciente(Integer id, String nome, Empresa empresa) {
         this.id = id;
+        this.nome = nome;
         this.empresa = empresa;
+    }
+
+    public Paciente(Integer id, String nome, Empresa empresa, Funcao funcao, Convenio convenio) {
+        this.id = id;
+        this.nome = nome;
+        this.empresa = empresa;
+        this.funcao = funcao;
+        this.convenio = convenio;
+    }   
+
+    
+    public Paciente(Integer id, String numConvenio, Convenio convenio, String nome, String email, String numero, String complemento, String cpf, String rg, Date dataNasc, String tipoSangue, String foneFixo, String celular1, String celular2, String celular3, String obs, Cep cep, boolean desabilitado, String nomeMae, String nomePai, Empresa empresa, Funcao funcao) {
+        this.id = id;
+        this.numConvenio = numConvenio;
+        this.convenio = convenio;
         this.nome = nome;
         this.email = email;
         this.numero = numero;
@@ -59,6 +75,34 @@ public class Paciente {
         this.cpf = cpf;
         this.rg = rg;
         this.dataNasc = dataNasc;
+        this.tipoSangue = tipoSangue;
+        this.foneFixo = foneFixo;
+        this.celular1 = celular1;
+        this.celular2 = celular2;
+        this.celular3 = celular3;
+        this.obs = obs;
+        this.cep = cep;
+        this.desabilitado = desabilitado;
+        this.nomeMae = nomeMae;
+        this.nomePai = nomePai;
+        this.empresa = empresa;
+        this.funcao = funcao;
+    }
+
+    
+
+    public Paciente(Integer id, String numConvenio, Convenio convenio, String nome, String email, String numero, String complemento, String cpf, String rg, Date dataNasc, String tipoSangue, String foneFixo, String celular1, String celular2, String celular3, String obs, Cep cep, boolean desabilitado, Date dataCadastro, String nomeMae, String nomePai, Empresa empresa, Funcao funcao) {
+        this.id = id;
+        this.numConvenio = numConvenio;
+        this.convenio = convenio;
+        this.nome = nome;
+        this.email = email;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.cpf = cpf;
+        this.rg = rg;
+        this.dataNasc = dataNasc;
+        this.tipoSangue = tipoSangue;
         this.foneFixo = foneFixo;
         this.celular1 = celular1;
         this.celular2 = celular2;
@@ -69,37 +113,10 @@ public class Paciente {
         this.dataCadastro = dataCadastro;
         this.nomeMae = nomeMae;
         this.nomePai = nomePai;
-        this.setor = setor;
-        this.funcao = funcao;
-        this.dataAdmissao = dataAdmissao;
-    }
-
-    public Paciente(Integer id, Empresa empresa, String nome, String email, String numero, String complemento, String cpf, String rg, Date dataNasc, String foneFixo, String celular1, String celular2, String celular3, String obs, Cep cep, boolean desabilitado, String nomeMae, String nomePai, Setor setor, Funcao funcao, Date dataAdmissao) {
-        this.id = id;
         this.empresa = empresa;
-        this.nome = nome;
-        this.email = email;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.cpf = cpf;
-        this.rg = rg;
-        this.dataNasc = dataNasc;
-        this.foneFixo = foneFixo;
-        this.celular1 = celular1;
-        this.celular2 = celular2;
-        this.celular3 = celular3;
-        this.obs = obs;
-        this.cep = cep;
-        this.desabilitado = desabilitado;
-        this.nomeMae = nomeMae;
-        this.nomePai = nomePai;
-        this.setor = setor;
         this.funcao = funcao;
-        this.dataAdmissao = dataAdmissao;
     }
     
-    
-
     public Integer getId() {
         return id;
     }
@@ -108,12 +125,20 @@ public class Paciente {
         this.id = id;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public String getNumConvenio() {
+        return numConvenio;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setNumConvenio(String numConvenio) {
+        this.numConvenio = numConvenio;
+    }
+
+    public Convenio getConvenio() {
+        return convenio;
+    }
+
+    public void setConvenio(Convenio convenio) {
+        this.convenio = convenio;
     }
 
     public String getNome() {
@@ -170,6 +195,14 @@ public class Paciente {
 
     public void setDataNasc(Date dataNasc) {
         this.dataNasc = dataNasc;
+    }
+
+    public String getTipoSangue() {
+        return tipoSangue;
+    }
+
+    public void setTipoSangue(String tipoSangue) {
+        this.tipoSangue = tipoSangue;
     }
 
     public String getFoneFixo() {
@@ -238,6 +271,22 @@ public class Paciente {
         this.dataCadastro = dataCadastro;
     }
 
+    public Date getDataUltConsu() {
+        return dataUltConsu;
+    }
+
+    public void setDataUltConsu(Date dataUltConsu) {
+        this.dataUltConsu = dataUltConsu;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getNomeMae() {
         return nomeMae;
     }
@@ -254,12 +303,12 @@ public class Paciente {
         this.nomePai = nomePai;
     }
 
-    public Setor getSetor() {
-        return setor;
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
-    public void setSetor(Setor setor) {
-        this.setor = setor;
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     public Funcao getFuncao() {
@@ -269,21 +318,4 @@ public class Paciente {
     public void setFuncao(Funcao funcao) {
         this.funcao = funcao;
     }
-
-    public Date getDataAdmissao() {
-        return dataAdmissao;
-    }
-
-    public void setDataAdmissao(Date dataAdmissao) {
-        this.dataAdmissao = dataAdmissao;
-    }
-    
-    
-    @Override
-    public String toString() {
-        return  nome;
-    }
-
-  
-    
 }

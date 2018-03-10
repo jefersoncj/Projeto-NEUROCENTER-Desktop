@@ -76,7 +76,7 @@ abstract public class AbstractConecxaoDAO {
 	}
 
 	protected Connection getConnection() throws Exception {
-            confBanco.load(new FileInputStream("/neurocenter/banco.ini"));
+            confBanco.load(new FileInputStream("/markconsultas/banco.ini"));
             
             Class.forName(confBanco.getProperty("driver"));
             String url=confBanco.getProperty("url")+

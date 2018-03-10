@@ -22,14 +22,14 @@ import javax.swing.table.AbstractTableModel;
 public class PacienteTableModel extends AbstractTableModel{
 //constantes que vão representar as colunas
     private final int COL_NOME = 0;
-    private final int COL_EMPRESA = 1;
-    private final int COL_SETOR= 2;
-    private final int COL_FUNCAO= 3;
-    private final int COL_CPFCNPJ= 4;
-    private final int COL_RG= 5;
-    private final int COL_LOGRADOURO= 6;
-    private final int COL_DATANASCI= 7;
-    private final int COL_OBS= 8; 
+    private final int COL_NUM_CONVNIO = 1;
+    private final int COL_CONVENIO= 2;
+    private final int COL_CPFCNPJ= 3;
+    private final int COL_RG= 4;
+    private final int COL_LOGRADOURO= 5;
+    private final int COL_DATANASCI= 6;
+    private final int COL_OBS= 7;   
+//    private final int COL_STATUS= 7;   
     
     //lista dos produtos que serão exibidos
     private List<Paciente> clientes;
@@ -57,7 +57,7 @@ public class PacienteTableModel extends AbstractTableModel{
     public int getColumnCount() {
        
       //Quantidade de colunas
-        return 9;
+        return 7;
     }
 
     
@@ -67,16 +67,13 @@ public class PacienteTableModel extends AbstractTableModel{
         if (column == COL_NOME) {
             return "Nome";
         
-        }else if (column == COL_EMPRESA) {
-            return "Empresa";
+        }else if (column == COL_NUM_CONVNIO) {
+            return "Nº Convênio";
         
-        }else if (column == COL_SETOR) {
-            return "Setor";
+        }else if (column == COL_CONVENIO) {
+            return "Convênio";
         
-        }else if (column == COL_FUNCAO) {
-            return "Função";
-        
-        }   else if (column == COL_CPFCNPJ) {
+        }  else if (column == COL_CPFCNPJ) {
             return "CPF";
             
         }else if (column == COL_RG) {
@@ -97,6 +94,10 @@ public class PacienteTableModel extends AbstractTableModel{
             return "Observação";
             
         }
+//        else if (column == COL_STATUS) {
+//            return "Status Últ. Cons.";
+//            
+//        }
         return "";
     }
       
@@ -105,12 +106,9 @@ public class PacienteTableModel extends AbstractTableModel{
        // retorna a classe que representa a coluna
         if (columnIndex == COL_NOME) {
             return String.class;
-        } else if (columnIndex == COL_EMPRESA) {
+        } else if (columnIndex == COL_NUM_CONVNIO) {
             return String.class;
-       }else if (columnIndex == COL_SETOR) {
-        return String.class;
-       }
-       else if (columnIndex == COL_FUNCAO) {
+       }else if (columnIndex == COL_CONVENIO) {
         return String.class;
        }
        else if (columnIndex == COL_CPFCNPJ) {
@@ -141,15 +139,12 @@ public class PacienteTableModel extends AbstractTableModel{
         //verifica qual valor deve ser retornado
         if (columnIndex == COL_NOME) {
             return c.getNome();
+        } 
+        else if (columnIndex == COL_NUM_CONVNIO) {
+            return c.getNumConvenio();
         }
-        else if (columnIndex == COL_EMPRESA) {
-            return c.getEmpresa().getFantasia();
-        } 
-        else if (columnIndex == COL_SETOR) {
-            return c.getSetor().getDescSetor();
-        } 
-        else if (columnIndex == COL_FUNCAO) {
-            return c.getFuncao().getDescFuncao();
+        else if (columnIndex == COL_CONVENIO) {
+            return c.getConvenio().getDsConvenio();
         } 
         else if (columnIndex == COL_CPFCNPJ) {
             return c.getCpf();
@@ -166,7 +161,29 @@ public class PacienteTableModel extends AbstractTableModel{
         else if (columnIndex == COL_OBS) {
             return c.getObs();
         }
-
+//        
+//        else if (columnIndex == COL_STATUS) {
+//            
+//            String status = c.getStatus().toString();
+//            switch (status) {
+//                case "1":
+//                    status = "ABERTA";
+//                    break;
+//                case "2":
+//                    status = "ENCERRADA";
+//                    break;
+//                case "3":
+//                    status = "CANCELADA";
+//                    break;
+//                case "4":
+//                    status = "FALTOU";
+//                    break;
+//                case "5":
+//                    status = "AGUARDANDO";
+//                    break;
+//            }
+//            return status;
+//        }
         
         return "";
         

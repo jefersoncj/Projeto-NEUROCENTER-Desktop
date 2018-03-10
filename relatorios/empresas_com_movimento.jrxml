@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68d7f281-a895-4261-bb2e-12edb352c279">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_empresa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataIn" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT   empre.fantasia, empre.logradouro AS logreemp ,empre.numero AS numeroemp, empre.bairro AS bairoempr,empre.fone_fixo AS foneemp ,empre.municipio AS muniemp, empre.figura,empre.uf, emp.id AS id_emp, emp.fantasia AS fan, conv.ds_convenio
+FROM empresa AS emp
+LEFT JOIN clinicas AS empre ON empre.id = $P{id_empresa}
+LEFT JOIN pacientes AS pa ON pa.id_empresa = emp.id 
+LEFT JOIN consultas AS con ON con.id_paciente = pa.id
+LEFT JOIN convenios AS conv ON conv.id = con.id_convenio
+WHERE con.data_consulta  BETWEEN $P{dataIn} AND $P{dataFin}  
+group by  empre.fantasia, empre.logradouro,empre.numero, empre.bairro ,empre.fone_fixo ,empre.municipio , empre.figura,empre.uf,emp.id, emp.fantasia, conv.ds_convenio  order by fan]]>
+	</queryString>
+	<field name="fantasia" class="java.lang.String"/>
+	<field name="logreemp" class="java.lang.String"/>
+	<field name="numeroemp" class="java.lang.String"/>
+	<field name="bairoempr" class="java.lang.String"/>
+	<field name="foneemp" class="java.lang.String"/>
+	<field name="muniemp" class="java.lang.String"/>
+	<field name="figura" class="java.lang.Object"/>
+	<field name="uf" class="java.lang.String"/>
+	<field name="id_emp" class="java.lang.Integer"/>
+	<field name="fan" class="java.lang.String"/>
+	<field name="ds_convenio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ab1107ef-a563-4507-9ecc-c5d1036ff367" x="367" y="69" width="39" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b40ebb7c-49f3-4fec-bc22-51a34e5c0d2f" x="110" y="16" width="212" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{logreemp}+", "+$F{numeroemp}+", "+$F{bairoempr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="267646c3-fea9-4dd6-a442-88e62358ed7a" x="110" y="5" width="89" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fantasia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="399c5bab-ffca-4c17-8707-4414a63a1103" x="110" y="28" width="198" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{muniemp}+" - "+$F{uf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="dcf3b077-429c-46a2-978f-8b795080c774" x="462" y="69" width="11" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="a0501c28-6e14-47ae-a1a5-68f5e2d618aa" x="473" y="69" width="69" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataFin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0278af2e-325d-4112-82f7-2dcb89146fa5" x="354" y="34" width="201" height="33" forecolor="#666666"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de movimento]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="f18b9894-9580-4875-a4ec-20c4f56d50e7" x="10" y="3" width="89" height="68"/>
+				<imageExpression><![CDATA[new ByteArrayInputStream((byte[])$F{figura})]]></imageExpression>
+			</image>
+			<line>
+				<reportElement uuid="c5aa2536-a051-40c2-ad99-10155949effc" x="-1" y="89" width="284" height="1" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="10.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="c9e143b0-a67c-49df-8ca0-d3b988e78319" x="110" y="39" width="198" height="13"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FONE: "+$F{foneemp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="d179a0b5-14f6-4643-ae8b-e30caef0c522" x="406" y="69" width="56" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataIn}]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement uuid="c02d5d2d-c748-4e7a-8b93-15c20b1e884f" x="280" y="10" width="74" height="81" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="9.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="ff114d41-9fc1-4cd1-9d4f-8754945cef7f" x="351" y="11" width="203" height="1" forecolor="#999999"/>
+				<graphicElement>
+					<pen lineWidth="10.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="8" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="26dfde07-0940-480d-b6a3-b423938e9c27" x="-1" y="2" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Empresa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="948c4709-1dd3-44f1-a4e0-eacecf63a72f" x="283" y="2" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<text><![CDATA[Credenciado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<textField>
+				<reportElement uuid="a3124753-6e9c-41dc-8ffd-62b590407de4" x="0" y="0" width="84" height="20"/>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0508befd-1e0a-404c-b38a-ac007e1e6bb8" x="284" y="0" width="100" height="20"/>
+				<textElement>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ds_convenio}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="4afd43ee-2598-4297-88fd-4ef963adb2db" x="0" y="0" width="554" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e1782b2d-f94c-44c5-ad00-8e2e6ce6214c" x="427" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="ce4198b7-6e47-4749-90df-9fb623023507" x="-1" y="0" width="192" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="dd0b99e4-5d42-4306-90c7-db204bfb920c" x="514" y="0" width="40" height="20"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

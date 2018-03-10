@@ -22,6 +22,8 @@ public class UsuarioTableModel extends AbstractTableModel{
 //constantes que vão representar as colunas
     private final int COL_ID = 0;
     private final int COL_NOMEUSU = 1;
+    private final int COL_CRM = 2;
+    private final int COL_ESP = 3;
 
     
     //lista dos produtos que serão exibidos
@@ -63,6 +65,13 @@ public class UsuarioTableModel extends AbstractTableModel{
         }else if (column == COL_NOMEUSU) {
             return "Nome";
         
+        }else if (column == COL_CRM) {
+            return "CRM";
+        
+        }
+        else if (column == COL_ESP) {
+            return "Especialidade";
+        
         }
         
         return "";
@@ -74,6 +83,11 @@ public class UsuarioTableModel extends AbstractTableModel{
         if (columnIndex == COL_ID) {
             return int.class;
         } else if (columnIndex == COL_NOMEUSU) {
+            return String.class;
+       }else if (columnIndex == COL_CRM) {
+            return String.class;
+       }
+        else if (columnIndex == COL_ESP) {
             return String.class;
        }
        
@@ -91,6 +105,13 @@ public class UsuarioTableModel extends AbstractTableModel{
         else if (columnIndex == COL_NOMEUSU) {
             return u.getNome();
         }
+        else if (columnIndex == COL_CRM) {
+            return u.getCrm();
+        }
+        else if (columnIndex == COL_ESP) {
+            return u.getEspecialidade().getEspecialidade();
+        }
+    
       
         
       

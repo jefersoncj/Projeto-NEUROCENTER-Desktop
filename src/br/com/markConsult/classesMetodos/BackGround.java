@@ -87,7 +87,7 @@ public class BackGround extends JDesktopPane {
                 g2d.dispose(); 
                 
             }else{
-                     g.drawString("Imagem nao encontrada", 50, 50);
+                     g.drawString("Imagem não encontrada", 50, 50);
                     //g.setColor(Color.GRAY);
                 }
                 
